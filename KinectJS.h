@@ -57,19 +57,17 @@ public:
     /** END EVENTDEF -- DON'T CHANGE THIS LINE **/
 
 private:
-	// Kinect device
-	/*INuiSensor *		current_kinect;
-	BSTR				instanceID;*/
-	//HRESULT				NuiInit();
-	//void				NuiUnInit();
-
 	// Callbacks
-	void				got_skeleton_alert();
-	HANDLE				nextSkeletonEvent;
+	void					gotSkeletonAlert();
+	HANDLE					next_skeleton_event;
+
+	// Threading
+	static DWORD WINAPI		kinectMonitor(LPVOID);
+	HANDLE					kinect_monitor_stop;
+	HANDLE					kinect_monitor_thread;
 
 	// Skeletons
-	NUI_SKELETON_FRAME	last_skeleton_frame;
-	DWORD				last_skeleton_time;
+	NUI_SKELETON_FRAME		last_skeleton_frame;
 };
 
 

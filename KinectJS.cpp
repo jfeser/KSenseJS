@@ -123,6 +123,43 @@ KinectJS::~KinectJS()
 //	}
 //}
 
+
+// Get data from the Kinect using a separate thread.  Put that data back into the
+// original KinectJS object.
+DWORD WINAPI KinectJS::kinectMonitor( LPVOID lpParam )
+{
+	// pthis is a reference to the object that created the thread.  Use it to access
+	// non-static variables.
+	KinectJS *pthis = (KinectJS *)lpParam;
+	const int num_events = 2;
+	HANDLE events[num_events] = { pthis->kinect_monitor_stop, pthis->next_skeleton_event };
+	DWORD event_id;
+
+	bool continueProcessing = true;
+	while ( continueProcessing ) {
+		// Wait for events
+		event_id = WaitForMultipleObjects( num_events, events, FALSE, 100 );
+
+		// Process events
+		switch ( event_id ) {
+			case WAIT_TIMEOUT:
+				continue;
+
+			case WAIT_OBJECT_0:
+				continueProcessing = false;
+				continue;
+
+			case WAIT_OBJECT_0 + 1:
+				pthis->gotSkeletonAlert();
+				break;
+		}
+	}
+
+	return 0;
+}
+
+/*	Called once the plugin is loaded.  Connect to the Kinect and launch a monitoring thread
+	here. */
 void KinectJS::onPluginReady()
 {
 	HRESULT hr;
@@ -133,10 +170,37 @@ void KinectJS::onPluginReady()
 	else {
 		m_host->htmlLog("Plugin ready.");
 	}
+
+	next_skeleton_event = CreateEvent( NULL, TRUE, FALSE, NULL );
+	NuiSkeletonTrackingEnable(next_skeleton_event, NUI_SKELETON_TRACKING_FLAG_SUPPRESS_NO_FRAME_DATA);
+
+	// Create and launch Kinect monitoring thread
+	kinect_monitor_stop = CreateEvent( NULL, FALSE, FALSE, NULL );
+	kinect_monitor_thread = CreateThread( NULL, 0, &KinectJS::kinectMonitor, this, 0, NULL);
 }
 
+/*	Called when the plugin is unloaded.  Disconnect from the Kinect, shut down the
+	monitoring thread and close all handles here. */
 void KinectJS::shutdown()
-{
+{	
+	// Stop the Kinect monitoring thread and clean up handles
+	if ( kinect_monitor_stop != NULL ) {
+		SetEvent(kinect_monitor_stop); 
+
+		if ( kinect_monitor_thread != NULL ) {
+			WaitForSingleObject( kinect_monitor_thread, INFINITE );
+			CloseHandle( kinect_monitor_thread );
+		}
+		CloseHandle( kinect_monitor_stop );
+	}
+
+	// Clean up remaining handles
+	if ( next_skeleton_event != NULL && ( next_skeleton_event != INVALID_HANDLE_VALUE ) ) {
+		CloseHandle( next_skeleton_event );
+		next_skeleton_event = NULL;
+	}
+
+	// Disconnect from the Kinect
 	NuiShutdown();
 }
 
@@ -186,13 +250,11 @@ bool KinectJS::onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *)
     return false;
 }
 
-/*	
-	Handle a skeleton alert by storing skeleton data in the appropriate place in the 
-	plugin object.
-*/
-void KinectJS::got_skeleton_alert()
+/*	Handle a skeleton alert by storing skeleton data in the appropriate place in the 
+	plugin object. */
+void KinectJS::gotSkeletonAlert()
 {
-	bool found_skeleton;
+	bool found_skeleton = false;
 
 	// Check that there is skeleton data in the skeleton frame.
 	if( SUCCEEDED(NuiSkeletonGetNextFrame(0, &last_skeleton_frame)) ) {
