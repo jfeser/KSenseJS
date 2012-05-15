@@ -58,17 +58,18 @@ public:
 
 private:
 	// Kinect device
-	INuiSensor *		current_kinect;
-	BSTR				instanceID;
+	/*INuiSensor *		current_kinect;
+	BSTR				instanceID;*/
 	//HRESULT				NuiInit();
 	//void				NuiUnInit();
 
 	// Callbacks
-	HANDLE			nextSkeletonEvent;
+	void				got_skeleton_alert();
+	HANDLE				nextSkeletonEvent;
 
 	// Skeletons
-	DWORD			skeletonIDs[NUI_SKELETON_COUNT];
-	DWORD			trackedSkeletonIDs[NUI_SKELETON_COUNT];
+	NUI_SKELETON_FRAME	last_skeleton_frame;
+	DWORD				last_skeleton_time;
 };
 
 

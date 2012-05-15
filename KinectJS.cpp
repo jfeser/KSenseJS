@@ -195,3 +195,31 @@ bool KinectJS::onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *)
     return false;
 }
 
+/*	
+	Handle a skeleton alert by storing skeleton data in the appropriate place in the 
+	plugin object.
+*/
+void KinectJS::got_skeleton_alert()
+{
+	bool found_skeleton;
+
+	// Check that there is skeleton data in the skeleton frame.
+	if( SUCCEEDED(NuiSkeletonGetNextFrame(0, &last_skeleton_frame)) ) {
+		for( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
+			if ( last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
+				found_skeleton = true;
+			}
+		}
+	}
+
+	// If we find no skeletons, return.
+	if ( !found_skeleton ) {
+		return;
+	}
+
+	// Smooth out the skeleton data
+    HRESULT hr = NuiTransformSmooth(&last_skeleton_frame,NULL);
+    if ( FAILED(hr) ) {
+        return;
+    }
+}
