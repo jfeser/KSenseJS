@@ -125,10 +125,6 @@ KinectJS::~KinectJS()
 
 void KinectJS::onPluginReady()
 {
-    // When this is called, the BrowserHost is attached, the JSAPI object is
-    // created, and we are ready to interact with the page and such.  The
-    // PluginWindow may or may not have already fire the AttachedEvent at
-    // this point.
 	HRESULT hr;
 	hr = NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
 	if ( FAILED(hr) ) {
@@ -141,11 +137,6 @@ void KinectJS::onPluginReady()
 
 void KinectJS::shutdown()
 {
-    // This will be called when it is time for the plugin to shut down;
-    // any threads or anything else that may hold a shared_ptr to this
-    // object should be released here so that this object can be safely
-    // destroyed. This is the last point that shared_from_this and weak_ptr
-    // references to this object will be valid
 	NuiShutdown();
 }
 
