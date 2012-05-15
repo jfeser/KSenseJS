@@ -55,77 +55,8 @@ KinectJS::~KinectJS()
     m_host->freeRetainedObjects();
 }
 
-//void CALLBACK StatusProc(HRESULT status, const OLECHAR* instance_name, const OLECHAR* unique_name)
-//{
-//}
-//
-//HRESULT KinectJS::NuiInit()
-//{
-//	HRESULT hr;
-//	int kinect_sensor_count = 0;
-//	m_host->htmlLog("Initializing Kinect.");
-//	// Check that there is a sensor connected
-//	NuiGetSensorCount(&kinect_sensor_count);
-//	if ( kinect_sensor_count <= 0 ) {
-//		m_host->htmlLog("No Kinect device found.");
-//		return E_FAIL;
-//	}
-//	char ksc_str[10];
-//	itoa(kinect_sensor_count, ksc_str, 10);
-//	m_host->htmlLog(std::string(ksc_str));
-//
-//	// If the kinect is not initialized, try to initialize it
-//	if( !current_kinect ) {
-//		HRESULT hr = NuiCreateSensorByIndex(0, &current_kinect);
-//
-//		if ( FAILED(hr) ) {
-//			m_host->htmlLog("Unable to create Kinect sensor.");
-//			return hr;
-//		}
-//
-//		instanceID = current_kinect->NuiDeviceConnectionId();
-//	}
-//
-//	//nextSkeletonEvent = CreateEvent( NULL, TRUE, FALSE, NULL );
-//	NuiSetDeviceStatusCallback((NuiStatusProc)StatusProc, NULL);
-//	hr = current_kinect->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
-//	if ( FAILED(hr) ) {
-//		m_host->htmlLog("Unable to initialize Kinect sensor.");
-//		return hr;
-//	}
-//
-//	//// If the sensor has a skeletal engine, register an event to catch skeleton data
-//	//if ( HasSkeletalEngine(current_kinect) ) {
-//	//	hr = current_kinect->NuiSkeletonTrackingEnable(nextSkeletonEvent, 0);
-//	//	if ( FAILED(hr) ) {
-//	//		m_host->htmlLog("Unable to enable skeleton tracking.");
-//	//		return hr;
-//	//	}
-//	//}
-//
-//	//m_host->htmlLog("Initializing Kinect succeeded.");
-//	//return hr;
-//	return 1;
-//}
-//
-//void KinectJS::NuiUnInit()
-//{
-//	if ( current_kinect ) {
-//		current_kinect->NuiShutdown();
-//	}
-//	if ( nextSkeletonEvent && ( nextSkeletonEvent != INVALID_HANDLE_VALUE ) ) {
-//		CloseHandle( nextSkeletonEvent );
-//		nextSkeletonEvent = NULL;
-//	}
-//	if ( current_kinect ) {
-//		current_kinect->Release();
-//		current_kinect = NULL;
-//	}
-//}
-
-
-// Get data from the Kinect using a separate thread.  Put that data back into the
-// original KinectJS object.
+/*	Get data from the Kinect using a separate thread.  Put that data back into the
+	original KinectJS object. */
 DWORD WINAPI KinectJS::kinectMonitor( LPVOID lpParam )
 {
 	// pthis is a reference to the object that created the thread.  Use it to access
