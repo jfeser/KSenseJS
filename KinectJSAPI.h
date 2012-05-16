@@ -34,6 +34,9 @@ public:
         registerMethod("echo",      make_method(this, &KinectJSAPI::echo));
         registerMethod("testEvent", make_method(this, &KinectJSAPI::testEvent));
 		registerMethod("getSkeletonData", make_method(this, &KinectJSAPI::get_skeleton_data));
+		// There is never a good reason to call this from javascript.  It should only
+		// be called by the plugin object.
+		registerMethod("newSkeletonDataEvent", make_method(this, &KinectJSAPI::new_skeleton_data_event));
         
         // Read-write property
         registerProperty("testString",
@@ -73,6 +76,7 @@ public:
     FB::variant echo(const FB::variant& msg);
     
     // Event helpers
+	FB_JSAPI_EVENT(newskeletondata, 0, ());
     FB_JSAPI_EVENT(test, 0, ());
     FB_JSAPI_EVENT(echo, 2, (const FB::variant&, const int));
 	FB_JSAPI_EVENT(gotskeletondata, 0, ());
@@ -84,6 +88,7 @@ public:
 	int get_tracked_skeletons_count();
 	FB::VariantList get_valid_tracking_ids();
 	FB::VariantList get_skeleton_data(int);
+	void new_skeleton_data_event();
 
 private:
     KinectJSWeakPtr m_plugin;

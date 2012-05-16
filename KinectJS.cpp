@@ -108,6 +108,9 @@ void KinectJS::onPluginReady()
 	// Create and launch Kinect monitoring thread
 	kinect_monitor_stop = CreateEvent( NULL, FALSE, FALSE, NULL );
 	kinect_monitor_thread = CreateThread( NULL, 0, &KinectJS::kinectMonitor, this, 0, NULL);
+
+	// Get a reference to the root JSAPI object so that we can fire skeleton events
+	jsapi = getRootJSAPI();
 }
 
 /*	Called when the plugin is unloaded.  Disconnect from the Kinect, shut down the
@@ -206,4 +209,8 @@ void KinectJS::gotSkeletonAlert()
     if ( FAILED(hr) ) {
         return;
     }
+
+	// If we reach this point, we have new skeleton data, so we need to fire an event
+	FB::VariantList args;
+	jsapi->Invoke("newSkeletonDataEvent", args);
 }

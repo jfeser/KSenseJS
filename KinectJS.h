@@ -66,6 +66,7 @@ private:
 	HANDLE					kinect_monitor_stop;
 	HANDLE					kinect_monitor_thread;
 
+	FB::JSAPIPtr			jsapi;
 	// Skeletons
 	NUI_SKELETON_FRAME		last_skeleton_frame;
 };

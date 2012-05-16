@@ -113,17 +113,14 @@ FB::VariantList KinectJSAPI::get_skeleton_data(int tracking_id)
 		}
 	}
 
-	/*if ( found_data ) {
+	if ( found_data ) {
 		return skeleton_data;
 	} else {
-		FB::script_error("Invalid tracking ID");
-	}*/
-	return skeleton_data;
+		throw FB::script_error("Invalid tracking ID");
+	}
 }
 
-
-
-
-
-
-
+void KinectJSAPI::new_skeleton_data_event()
+{
+	fire_newskeletondata();
+}
