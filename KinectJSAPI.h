@@ -33,6 +33,7 @@ public:
     {
         registerMethod("echo",      make_method(this, &KinectJSAPI::echo));
         registerMethod("testEvent", make_method(this, &KinectJSAPI::testEvent));
+		registerMethod("getSkeletonData", make_method(this, &KinectJSAPI::get_skeleton_data));
         
         // Read-write property
         registerProperty("testString",
@@ -44,6 +45,10 @@ public:
         registerProperty("version",
                          make_property(this,
                                        &KinectJSAPI::get_version));
+		registerProperty("trackedSkeletonCount", 
+						 make_property(this, &KinectJSAPI::get_tracked_skeletons_count));
+		registerProperty("trackedSkeletonIDs",
+						 make_property(this, &KinectJSAPI::get_valid_tracking_ids));
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -76,7 +81,9 @@ public:
     // Method test-event
     void testEvent();
 	
-	int get_tracked_skeleton_count();
+	int get_tracked_skeletons_count();
+	FB::VariantList get_valid_tracking_ids();
+	FB::VariantList get_skeleton_data(int);
 
 private:
     KinectJSWeakPtr m_plugin;

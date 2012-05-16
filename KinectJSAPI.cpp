@@ -65,6 +65,64 @@ void KinectJSAPI::testEvent()
     fire_test();
 }
 
+int KinectJSAPI::get_tracked_skeletons_count()
+{
+	int tracked_skeleton_count = 0;
+	KinectJSPtr plugin = getPlugin();
+
+	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
+		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
+			tracked_skeleton_count++;
+		}
+	}
+
+	return tracked_skeleton_count;
+}
+
+FB::VariantList KinectJSAPI::get_valid_tracking_ids()
+{
+	KinectJSPtr plugin = getPlugin();
+	FB::VariantList tracking_ids;
+
+	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
+		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
+			tracking_ids.push_back(plugin->last_skeleton_frame.SkeletonData[i].dwTrackingID);
+		}
+	}
+
+	return tracking_ids;
+}
+
+FB::VariantList KinectJSAPI::get_skeleton_data(int tracking_id)
+{
+	KinectJSPtr plugin = getPlugin();
+	FB::VariantList skeleton_data (NUI_SKELETON_POSITION_COUNT, 0);
+	bool found_data;
+
+	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
+		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
+			 plugin->last_skeleton_frame.SkeletonData[i].dwTrackingID ) {
+			found_data = true;
+			for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
+				FB::VariantList position (3,0);
+				position[0] = plugin->last_skeleton_frame.SkeletonData[i].SkeletonPositions[j].x;
+				position[1] = plugin->last_skeleton_frame.SkeletonData[i].SkeletonPositions[j].y;
+				position[2] = plugin->last_skeleton_frame.SkeletonData[i].SkeletonPositions[j].z;
+				skeleton_data[j] = position;
+			}
+		}
+	}
+
+	/*if ( found_data ) {
+		return skeleton_data;
+	} else {
+		FB::script_error("Invalid tracking ID");
+	}*/
+	return skeleton_data;
+}
+
+
+
 
 
 
