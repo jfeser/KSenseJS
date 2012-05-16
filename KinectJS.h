@@ -56,6 +56,9 @@ public:
     virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
     /** END EVENTDEF -- DON'T CHANGE THIS LINE **/
 
+	// Skeletons
+	NUI_SKELETON_FRAME		last_skeleton_frame;
+
 private:
 	// Callbacks
 	void					gotSkeletonAlert();
@@ -67,8 +70,6 @@ private:
 	HANDLE					kinect_monitor_thread;
 
 	FB::JSAPIPtr			jsapi;
-	// Skeletons
-	NUI_SKELETON_FRAME		last_skeleton_frame;
 };
 
 
