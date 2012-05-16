@@ -12,21 +12,6 @@
 #include "KinectJSAPI.h"
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @fn FB::variant KinectJSAPI::echo(const FB::variant& msg)
-///
-/// @brief  Echos whatever is passed from Javascript.
-///         Go ahead and change it. See what happens!
-///////////////////////////////////////////////////////////////////////////////
-FB::variant KinectJSAPI::echo(const FB::variant& msg)
-{
-    static int n(0);
-    fire_echo("So far, you clicked this many times: ", n++);
-
-    // return "foobar";
-    return msg;
-}
-
-///////////////////////////////////////////////////////////////////////////////
 /// @fn KinectJSPtr KinectJSAPI::getPlugin()
 ///
 /// @brief  Gets a reference to the plugin that was passed in when the object
@@ -43,28 +28,8 @@ KinectJSPtr KinectJSAPI::getPlugin()
     return plugin;
 }
 
-// Read/Write property testString
-std::string KinectJSAPI::get_testString()
-{
-    return m_testString;
-}
 
-void KinectJSAPI::set_testString(const std::string& val)
-{
-    m_testString = val;
-}
-
-// Read-only property version
-std::string KinectJSAPI::get_version()
-{
-    return FBSTRING_PLUGIN_VERSION;
-}
-
-void KinectJSAPI::testEvent()
-{
-    fire_test();
-}
-
+/*	Get the number of skeletons tracked by the Kinect. */
 int KinectJSAPI::get_tracked_skeletons_count()
 {
 	int tracked_skeleton_count = 0;
@@ -79,6 +44,7 @@ int KinectJSAPI::get_tracked_skeletons_count()
 	return tracked_skeleton_count;
 }
 
+/*	Get a list of tracking IDs for the currently tracked skeletons. */
 FB::VariantList KinectJSAPI::get_valid_tracking_ids()
 {
 	KinectJSPtr plugin = getPlugin();
@@ -93,11 +59,13 @@ FB::VariantList KinectJSAPI::get_valid_tracking_ids()
 	return tracking_ids;
 }
 
+/*	Get the skeleton data that corresponds to the given tracking ID.  If the tracking
+	ID is invalid, throw an error. */
 FB::VariantList KinectJSAPI::get_skeleton_data(int tracking_id)
 {
 	KinectJSPtr plugin = getPlugin();
 	FB::VariantList skeleton_data (NUI_SKELETON_POSITION_COUNT, 0);
-	bool found_data;
+	bool found_data = false;
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
 		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
