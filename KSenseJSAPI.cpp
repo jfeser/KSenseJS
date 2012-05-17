@@ -1,6 +1,6 @@
 /**********************************************************\
 
-  Auto-generated KinectJSAPI.cpp
+  Auto-generated KSenseJSAPI.cpp
 
 \**********************************************************/
 
@@ -9,19 +9,19 @@
 #include "DOM/Document.h"
 #include "global/config.h"
 
-#include "KinectJSAPI.h"
+#include "KSenseJSAPI.h"
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @fn KinectJSPtr KinectJSAPI::getPlugin()
+/// @fn KSenseJSPtr KSenseJSAPI::getPlugin()
 ///
 /// @brief  Gets a reference to the plugin that was passed in when the object
 ///         was created.  If the plugin has already been released then this
 ///         will throw a FB::script_error that will be translated into a
 ///         javascript exception in the page.
 ///////////////////////////////////////////////////////////////////////////////
-KinectJSPtr KinectJSAPI::getPlugin()
+KSenseJSPtr KSenseJSAPI::getPlugin()
 {
-    KinectJSPtr plugin(m_plugin.lock());
+    KSenseJSPtr plugin(m_plugin.lock());
     if (!plugin) {
         throw FB::script_error("The plugin is invalid");
     }
@@ -30,10 +30,10 @@ KinectJSPtr KinectJSAPI::getPlugin()
 
 
 /*	Get the number of skeletons tracked by the Kinect. */
-int KinectJSAPI::get_tracked_skeletons_count()
+int KSenseJSAPI::get_tracked_skeletons_count()
 {
 	int tracked_skeleton_count = 0;
-	KinectJSPtr plugin = getPlugin();
+	KSenseJSPtr plugin = getPlugin();
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
 		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
@@ -45,9 +45,9 @@ int KinectJSAPI::get_tracked_skeletons_count()
 }
 
 /*	Get a list of tracking IDs for the currently tracked skeletons. */
-FB::VariantList KinectJSAPI::get_valid_tracking_ids()
+FB::VariantList KSenseJSAPI::get_valid_tracking_ids()
 {
-	KinectJSPtr plugin = getPlugin();
+	KSenseJSPtr plugin = getPlugin();
 	FB::VariantList tracking_ids;
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
@@ -61,9 +61,9 @@ FB::VariantList KinectJSAPI::get_valid_tracking_ids()
 
 /*	Get the skeleton data that corresponds to the given tracking ID.  If the tracking
 	ID is invalid, throw an error. */
-FB::VariantList KinectJSAPI::get_skeleton_data(int tracking_id)
+FB::VariantList KSenseJSAPI::get_skeleton_data(int tracking_id)
 {
-	KinectJSPtr plugin = getPlugin();
+	KSenseJSPtr plugin = getPlugin();
 	FB::VariantList skeleton_data (NUI_SKELETON_POSITION_COUNT, 0);
 	bool found_data = false;
 
@@ -88,7 +88,7 @@ FB::VariantList KinectJSAPI::get_skeleton_data(int tracking_id)
 	}
 }
 
-void KinectJSAPI::new_skeleton_data_event()
+void KSenseJSAPI::new_skeleton_data_event()
 {
 	fire_newskeletondata();
 }

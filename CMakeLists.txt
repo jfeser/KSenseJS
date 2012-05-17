@@ -1,6 +1,6 @@
 #/**********************************************************\ 
 # 
-# Auto-generated CMakeLists.txt for the Kinect JS project
+# Auto-generated CMakeLists.txt for the KSense JS project
 #
 #\**********************************************************/
 

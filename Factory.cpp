@@ -3,12 +3,12 @@
  Auto-generated Factory.cpp
  
  This file contains the auto-generated factory methods 
- for the KinectJS project
+ for the KSenseJS project
  
 \**********************************************************/
 
 #include "FactoryBase.h"
-#include "KinectJS.h"
+#include "KSenseJS.h"
 #include <boost/make_shared.hpp>
 
 class PluginFactory : public FB::FactoryBase
@@ -22,7 +22,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////
     FB::PluginCorePtr createPlugin(const std::string& mimetype)
     {
-        return boost::make_shared<KinectJS>();
+        return boost::make_shared<KSenseJS>();
     }
     
     ///////////////////////////////////////////////////////////////////////////////
@@ -30,7 +30,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////
     void globalPluginInitialize()
     {
-        KinectJS::StaticInitialize();
+        KSenseJS::StaticInitialize();
     }
     
     ///////////////////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ public:
     ///////////////////////////////////////////////////////////////////////////////
     void globalPluginDeinitialize()
     {
-        KinectJS::StaticDeinitialize();
+        KSenseJS::StaticDeinitialize();
     }
 
 	void getLoggingMethods( FB::Log::LogMethodList& outMethods )

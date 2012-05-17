@@ -5,18 +5,18 @@
 #
 #\**********************************************************/
 
-set(PLUGIN_NAME "KinectJS")
+set(PLUGIN_NAME "KSenseJS")
 set(PLUGIN_PREFIX "KJS")
 set(COMPANY_NAME "UIUC")
 
 # ActiveX constants:
-set(FBTYPELIB_NAME KinectJSLib)
-set(FBTYPELIB_DESC "KinectJS 1.0 Type Library")
-set(IFBControl_DESC "KinectJS Control Interface")
-set(FBControl_DESC "KinectJS Control Class")
-set(IFBComJavascriptObject_DESC "KinectJS IComJavascriptObject Interface")
-set(FBComJavascriptObject_DESC "KinectJS ComJavascriptObject Class")
-set(IFBComEventSource_DESC "KinectJS IFBComEventSource Interface")
+set(FBTYPELIB_NAME KSenseJSLib)
+set(FBTYPELIB_DESC "KSenseJS 1.0 Type Library")
+set(IFBControl_DESC "KSenseJS Control Interface")
+set(FBControl_DESC "KSenseJS Control Class")
+set(IFBComJavascriptObject_DESC "KSenseJS IComJavascriptObject Interface")
+set(FBComJavascriptObject_DESC "KSenseJS ComJavascriptObject Class")
+set(IFBComEventSource_DESC "KSenseJS IFBComEventSource Interface")
 set(AXVERSION_NUM "1")
 
 # NOTE: THESE GUIDS *MUST* BE UNIQUE TO YOUR PLUGIN/ACTIVEX CONTROL!  YES, ALL OF THEM!
@@ -28,8 +28,8 @@ set(FBComJavascriptObject_GUID 5a3fc00d-369b-56b7-80d1-b46dff083ba9)
 set(IFBComEventSource_GUID 1fe257a2-a740-5348-b4ee-3d6932060b10)
 
 # these are the pieces that are relevant to using it from Javascript
-set(ACTIVEX_PROGID "UIUC.KinectJS")
-set(MOZILLA_PLUGINID "uiuc.com/KinectJS")
+set(ACTIVEX_PROGID "UIUC.KSenseJS")
+set(MOZILLA_PLUGINID "uiuc.com/KSenseJS")
 
 # strings
 set(FBSTRING_CompanyName "UIUC")
@@ -37,10 +37,10 @@ set(FBSTRING_PluginDescription "Kinect JavaScript interface")
 set(FBSTRING_PLUGIN_VERSION "1.0.0.0")
 set(FBSTRING_LegalCopyright "Copyright 2012 UIUC")
 set(FBSTRING_PluginFileName "np${PLUGIN_NAME}.dll")
-set(FBSTRING_ProductName "Kinect JS")
+set(FBSTRING_ProductName "KSense JS")
 set(FBSTRING_FileExtents "")
-set(FBSTRING_PluginName "Kinect JS")
-set(FBSTRING_MIMEType "application/x-kinectjs")
+set(FBSTRING_PluginName "KSense JS")
+set(FBSTRING_MIMEType "application/x-ksensejs")
 
 # Uncomment this next line if you're not planning on your plugin doing
 # any drawing:

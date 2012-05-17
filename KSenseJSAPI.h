@@ -1,6 +1,6 @@
 /**********************************************************\
 
-  Auto-generated KinectJSAPI.h
+  Auto-generated KSenseJSAPI.h
 
 \**********************************************************/
 
@@ -9,16 +9,16 @@
 #include <boost/weak_ptr.hpp>
 #include "JSAPIAuto.h"
 #include "BrowserHost.h"
-#include "KinectJS.h"
+#include "KSenseJS.h"
 
-#ifndef H_KinectJSAPI
-#define H_KinectJSAPI
+#ifndef H_KSenseJSAPI
+#define H_KSenseJSAPI
 
-class KinectJSAPI : public FB::JSAPIAuto
+class KSenseJSAPI : public FB::JSAPIAuto
 {
 public:
     ////////////////////////////////////////////////////////////////////////////
-    /// @fn KinectJSAPI::KinectJSAPI(const KinectJSPtr& plugin, const FB::BrowserHostPtr host)
+    /// @fn KSenseJSAPI::KSenseJSAPI(const KSenseJSPtr& plugin, const FB::BrowserHostPtr host)
     ///
     /// @brief  Constructor for your JSAPI object.
     ///         You should register your methods, properties, and events
@@ -28,30 +28,30 @@ public:
     /// @see FB::JSAPIAuto::registerProperty
     /// @see FB::JSAPIAuto::registerEvent
     ////////////////////////////////////////////////////////////////////////////
-    KinectJSAPI(const KinectJSPtr& plugin, const FB::BrowserHostPtr& host) :
+    KSenseJSAPI(const KSenseJSPtr& plugin, const FB::BrowserHostPtr& host) :
         m_plugin(plugin), m_host(host)
     {
-		registerMethod("getSkeletonData", make_method(this, &KinectJSAPI::get_skeleton_data));
+		registerMethod("getSkeletonData", make_method(this, &KSenseJSAPI::get_skeleton_data));
 		// There is never a good reason to call this from javascript.  It should only
 		// be called by the plugin object.
-		registerMethod("newSkeletonDataEvent", make_method(this, &KinectJSAPI::new_skeleton_data_event));
+		registerMethod("newSkeletonDataEvent", make_method(this, &KSenseJSAPI::new_skeleton_data_event));
 
 		registerProperty("trackedSkeletonCount", 
-						 make_property(this, &KinectJSAPI::get_tracked_skeletons_count));
+						 make_property(this, &KSenseJSAPI::get_tracked_skeletons_count));
 		registerProperty("trackedSkeletonIDs",
-						 make_property(this, &KinectJSAPI::get_valid_tracking_ids));
+						 make_property(this, &KSenseJSAPI::get_valid_tracking_ids));
     }
 
     ///////////////////////////////////////////////////////////////////////////////
-    /// @fn KinectJSAPI::~KinectJSAPI()
+    /// @fn KSenseJSAPI::~KSenseJSAPI()
     ///
     /// @brief  Destructor.  Remember that this object will not be released until
     ///         the browser is done with it; this will almost definitely be after
     ///         the plugin is released.
     ///////////////////////////////////////////////////////////////////////////////
-    virtual ~KinectJSAPI() {};
+    virtual ~KSenseJSAPI() {};
 
-    KinectJSPtr getPlugin();
+    KSenseJSPtr getPlugin();
     
     // Event helpers
 	FB_JSAPI_EVENT(newskeletondata, 0, ());
@@ -62,9 +62,9 @@ public:
 	void new_skeleton_data_event();
 
 private:
-    KinectJSWeakPtr m_plugin;
+    KSenseJSWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;
 };
 
-#endif // H_KinectJSAPI
+#endif // H_KSenseJSAPI
 

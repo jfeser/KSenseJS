@@ -1,13 +1,13 @@
 /**********************************************************\
 
-  Auto-generated KinectJS.h
+  Auto-generated KSenseJS.h
 
   This file contains the auto-generated main plugin object
-  implementation for the Kinect JS project
+  implementation for the KSense JS project
 
 \**********************************************************/
-#ifndef H_KinectJSPLUGIN
-#define H_KinectJSPLUGIN
+#ifndef H_KSenseJSPLUGIN
+#define H_KSenseJSPLUGIN
 
 #include "PluginWindow.h"
 #include "PluginEvents/MouseEvents.h"
@@ -18,16 +18,16 @@
 #include <Windows.h>
 #include <NuiApi.h>
 
-FB_FORWARD_PTR(KinectJS)
-class KinectJS : public FB::PluginCore
+FB_FORWARD_PTR(KSenseJS)
+class KSenseJS : public FB::PluginCore
 {
 public:
     static void StaticInitialize();
     static void StaticDeinitialize();
 
 public:
-    KinectJS();
-    virtual ~KinectJS();
+    KSenseJS();
+    virtual ~KSenseJS();
 
 public:
     void onPluginReady();

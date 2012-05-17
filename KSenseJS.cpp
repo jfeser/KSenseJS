@@ -1,51 +1,51 @@
 /**********************************************************\
 
-  Auto-generated KinectJS.cpp
+  Auto-generated KSenseJS.cpp
 
   This file contains the auto-generated main plugin object
-  implementation for the Kinect JS project
+  implementation for the KSense JS project
 
 \**********************************************************/
 
-#include "KinectJSAPI.h"
+#include "KSenseJSAPI.h"
 
-#include "KinectJS.h"
+#include "KSenseJS.h"
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @fn KinectJS::StaticInitialize()
+/// @fn KSenseJS::StaticInitialize()
 ///
 /// @brief  Called from PluginFactory::globalPluginInitialize()
 ///
 /// @see FB::FactoryBase::globalPluginInitialize
 ///////////////////////////////////////////////////////////////////////////////
-void KinectJS::StaticInitialize()
+void KSenseJS::StaticInitialize()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @fn KinectJS::StaticInitialize()
+/// @fn KSenseJS::StaticInitialize()
 ///
 /// @brief  Called from PluginFactory::globalPluginDeinitialize()
 ///
 /// @see FB::FactoryBase::globalPluginDeinitialize
 ///////////////////////////////////////////////////////////////////////////////
-void KinectJS::StaticDeinitialize()
+void KSenseJS::StaticDeinitialize()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @brief  KinectJS constructor.  Note that your API is not available
+/// @brief  KSenseJS constructor.  Note that your API is not available
 ///         at this point, nor the window.  For best results wait to use
 ///         the JSAPI object until the onPluginReady method is called
 ///////////////////////////////////////////////////////////////////////////////
-KinectJS::KinectJS()
+KSenseJS::KSenseJS()
 {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-/// @brief  KinectJS destructor.
+/// @brief  KSenseJS destructor.
 ///////////////////////////////////////////////////////////////////////////////
-KinectJS::~KinectJS()
+KSenseJS::~KSenseJS()
 {
     // This is optional, but if you reset m_api (the shared_ptr to your JSAPI
     // root object) and tell the host to free the retained JSAPI objects then
@@ -56,12 +56,12 @@ KinectJS::~KinectJS()
 }
 
 /*	Get data from the Kinect using a separate thread.  Put that data back into the
-	original KinectJS object. */
-DWORD WINAPI KinectJS::kinectMonitor( LPVOID lpParam )
+	original KSenseJS object. */
+DWORD WINAPI KSenseJS::kinectMonitor( LPVOID lpParam )
 {
 	// pthis is a reference to the object that created the thread.  Use it to access
 	// non-static variables.
-	KinectJS *pthis = (KinectJS *)lpParam;
+	KSenseJS *pthis = (KSenseJS *)lpParam;
 	const int num_events = 2;
 	HANDLE events[num_events] = { pthis->kinect_monitor_stop, pthis->next_skeleton_event };
 	DWORD event_id;
@@ -91,7 +91,7 @@ DWORD WINAPI KinectJS::kinectMonitor( LPVOID lpParam )
 
 /*	Called once the plugin is loaded.  Connect to the Kinect and launch a monitoring thread
 	here. */
-void KinectJS::onPluginReady()
+void KSenseJS::onPluginReady()
 {
 	HRESULT hr;
 	hr = NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
@@ -107,7 +107,7 @@ void KinectJS::onPluginReady()
 
 	// Create and launch Kinect monitoring thread
 	kinect_monitor_stop = CreateEvent( NULL, FALSE, FALSE, NULL );
-	kinect_monitor_thread = CreateThread( NULL, 0, &KinectJS::kinectMonitor, this, 0, NULL);
+	kinect_monitor_thread = CreateThread( NULL, 0, &KSenseJS::kinectMonitor, this, 0, NULL);
 
 	// Get a reference to the root JSAPI object so that we can fire skeleton events
 	jsapi = getRootJSAPI();
@@ -115,7 +115,7 @@ void KinectJS::onPluginReady()
 
 /*	Called when the plugin is unloaded.  Disconnect from the Kinect, shut down the
 	monitoring thread and close all handles here. */
-void KinectJS::shutdown()
+void KSenseJS::shutdown()
 {	
 	// Stop the Kinect monitoring thread and clean up handles
 	if ( kinect_monitor_stop != NULL ) {
@@ -144,41 +144,41 @@ void KinectJS::shutdown()
 ///
 /// Note that m_host is your BrowserHost and shared_ptr returns a
 /// FB::PluginCorePtr, which can be used to provide a
-/// boost::weak_ptr<KinectJS> for your JSAPI class.
+/// boost::weak_ptr<KSenseJS> for your JSAPI class.
 ///
 /// Be very careful where you hold a shared_ptr to your plugin class from,
 /// as it could prevent your plugin class from getting destroyed properly.
 ///////////////////////////////////////////////////////////////////////////////
-FB::JSAPIPtr KinectJS::createJSAPI()
+FB::JSAPIPtr KSenseJS::createJSAPI()
 {
     // m_host is the BrowserHost
-    return boost::make_shared<KinectJSAPI>(FB::ptr_cast<KinectJS>(shared_from_this()), m_host);
+    return boost::make_shared<KSenseJSAPI>(FB::ptr_cast<KSenseJS>(shared_from_this()), m_host);
 }
 
-bool KinectJS::onMouseDown(FB::MouseDownEvent *evt, FB::PluginWindow *)
+bool KSenseJS::onMouseDown(FB::MouseDownEvent *evt, FB::PluginWindow *)
 {
     //printf("Mouse down at: %d, %d\n", evt->m_x, evt->m_y);
     return false;
 }
 
-bool KinectJS::onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *)
+bool KSenseJS::onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *)
 {
     //printf("Mouse up at: %d, %d\n", evt->m_x, evt->m_y);
     return false;
 }
 
-bool KinectJS::onMouseMove(FB::MouseMoveEvent *evt, FB::PluginWindow *)
+bool KSenseJS::onMouseMove(FB::MouseMoveEvent *evt, FB::PluginWindow *)
 {
     //printf("Mouse move at: %d, %d\n", evt->m_x, evt->m_y);
     return false;
 }
-bool KinectJS::onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *)
+bool KSenseJS::onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow *)
 {
     // The window is attached; act appropriately
     return false;
 }
 
-bool KinectJS::onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *)
+bool KSenseJS::onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *)
 {
     // The window is about to be detached; act appropriately
     return false;
@@ -186,7 +186,7 @@ bool KinectJS::onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *)
 
 /*	Handle a skeleton alert by storing skeleton data in the appropriate place in the 
 	plugin object. */
-void KinectJS::gotSkeletonAlert()
+void KSenseJS::gotSkeletonAlert()
 {
 	bool found_skeleton = false;
 
