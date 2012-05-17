@@ -19,6 +19,8 @@ but I haven't tested them.
 
 5.  Install Cmake from [here][6].
 
+6.  Install Windows Driver Kit from [here][7].
+
 3.  Clone the KSenseJS repository to a convenient location.
 
 4.  To compile with Visual Studio 2010, run `prep2010.cmd
@@ -44,3 +46,4 @@ been tested, and it may or may not work.
 [4]: http://www.microsoft.com/en-us/kinectforwindows/develop/overview.aspx
 [5]: http://www.python.org/download/releases/2.7.3/
 [6]: http://www.cmake.org/cmake/resources/software.html
+[7]: http://msdn.microsoft.com/en-US/windows/hardware/hh852361
