@@ -22,16 +22,16 @@ but I haven't tested them.
 3.  Clone the KSenseJS repository to a convenient location.
 
 4.  To compile with Visual Studio 2010, run `prep2010.cmd
-[path to KinectJS]`.  `prep2010.cmd` is in the FireBreath folder.
+[path to KSenseJS]`.  `prep2010.cmd` is in the FireBreath folder.
 This will create a Visual Studio project in
 `[FireBreath directory]/build/projects/KSenseJS/`.  To compile with
 other versions of Visual Studio follow the instructions [here][3].
-Although FireBreath can be used on Linux and OSX, KinectJS depends on
+Although FireBreath can be used on Linux and OSX, KSenseJS depends on
 the Microsoft Kinect SDK, which is Windows only.
 
 5.  After compiling, binaries will be located in
 `[FireBreath directory]/build/bin/KSenseJS/Debug/`.  Run
-`regsvr32.exe` on `npKinectJS.dll` to register the DLL as a plugin.
+`regsvr32.exe` on `npKSenseJS.dll` to register the DLL as a plugin.
 
 6.  A test page will be generated in
 `[FireBreath directory]/build/projects/KSenseJS/gen/FBControl.html`.
