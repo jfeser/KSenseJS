@@ -34,9 +34,10 @@ int KSenseJSAPI::get_tracked_skeletons_count()
 {
 	int tracked_skeleton_count = 0;
 	KSenseJSPtr plugin = getPlugin();
+	SkeletonDataPtr skeleton_data = plugin->getSkeletonDataPtr();
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
-		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
+		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
 			tracked_skeleton_count++;
 		}
 	}
@@ -48,11 +49,12 @@ int KSenseJSAPI::get_tracked_skeletons_count()
 FB::VariantList KSenseJSAPI::get_valid_tracking_ids()
 {
 	KSenseJSPtr plugin = getPlugin();
+	SkeletonDataPtr skeleton_data = plugin->getSkeletonDataPtr();
 	FB::VariantList tracking_ids;
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
-		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
-			tracking_ids.push_back(plugin->last_skeleton_frame.SkeletonData[i].dwTrackingID);
+		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
+			tracking_ids.push_back(skeleton_data->SkeletonData[i].dwTrackingID);
 		}
 	}
 
@@ -64,25 +66,26 @@ FB::VariantList KSenseJSAPI::get_valid_tracking_ids()
 FB::VariantList KSenseJSAPI::get_skeleton_data(int tracking_id)
 {
 	KSenseJSPtr plugin = getPlugin();
-	FB::VariantList skeleton_data (NUI_SKELETON_POSITION_COUNT, 0);
+	SkeletonDataPtr skeleton_data = plugin->getSkeletonDataPtr();
+	FB::VariantList skeleton_data_output (NUI_SKELETON_POSITION_COUNT, 0);
 	bool found_data = false;
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
-		if ( plugin->last_skeleton_frame.SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
-			 plugin->last_skeleton_frame.SkeletonData[i].dwTrackingID ) {
+		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
+			 skeleton_data->SkeletonData[i].dwTrackingID ) {
 			found_data = true;
 			for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
 				FB::VariantList position (3,0);
-				position[0] = plugin->last_skeleton_frame.SkeletonData[i].SkeletonPositions[j].x;
-				position[1] = plugin->last_skeleton_frame.SkeletonData[i].SkeletonPositions[j].y;
-				position[2] = plugin->last_skeleton_frame.SkeletonData[i].SkeletonPositions[j].z;
-				skeleton_data[j] = position;
+				position[0] = skeleton_data->SkeletonData[i].SkeletonPositions[j].x;
+				position[1] = skeleton_data->SkeletonData[i].SkeletonPositions[j].y;
+				position[2] = skeleton_data->SkeletonData[i].SkeletonPositions[j].z;
+				skeleton_data_output[j] = position;
 			}
 		}
 	}
 
 	if ( found_data ) {
-		return skeleton_data;
+		return skeleton_data_output;
 	} else {
 		throw FB::script_error("Invalid tracking ID");
 	}
