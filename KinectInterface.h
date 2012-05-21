@@ -30,9 +30,9 @@ private:
 	bool						initialized;
 
 	// Threading
-	DWORD WINAPI				kinectMonitor(LPVOID);
-	HANDLE						kinect_monitor_stop;
-	HANDLE						kinect_monitor_thread;
+	static DWORD WINAPI __stdcall	kinectMonitor(LPVOID);
+	HANDLE							kinect_monitor_stop;
+	HANDLE							kinect_monitor_thread;
 
 	// Callbacks
 	std::list<KSenseJS*>		callback_objects;
