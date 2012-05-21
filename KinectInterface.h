@@ -2,11 +2,11 @@
 #define KINECT_INTERFACE
 
 #include <boost/make_shared.hpp>
+#include <boost/utility.hpp>
 #include <Windows.h>
 #include <NuiApi.h>
 
 #include "PluginCore.h"
-#include "KSenseJS.h"
 
 FB_FORWARD_PTR(KinectInterface)
 typedef boost::shared_ptr<NUI_SKELETON_FRAME> SkeletonDataPtr;

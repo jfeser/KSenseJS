@@ -63,6 +63,5 @@ private:
 	KinectInterfacePtr		kinect_interface;
 };
 
-
 #endif
 

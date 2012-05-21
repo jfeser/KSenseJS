@@ -7,9 +7,10 @@
 
 \**********************************************************/
 
-#include "KSenseJSAPI.h"
-
 #include "KSenseJS.h"
+
+#include "KSenseJSAPI.h"
+#include "KinectInterface.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @fn KSenseJS::StaticInitialize()

@@ -1,7 +1,11 @@
 #include "KinectInterface.h"
 
+#include <boost/make_shared.hpp>
 #include <Windows.h>
 #include <NuiApi.h>
+
+#include "KSenseJS.h"
+#include "PluginCore.h"
 
 KinectInterface::KinectInterface()
 {
