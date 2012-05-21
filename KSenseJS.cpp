@@ -65,6 +65,8 @@ void KSenseJS::onPluginReady()
 	} else {
 		m_host->htmlLog("Kinect initialization succeeded.");
 	}
+	// Register to get skeleton data
+	kinect_interface->registerSkeletonDataCallback(this);
 	// Get a reference to the root JSAPI object so that we can fire skeleton events
 	jsapi = getRootJSAPI();
 }
