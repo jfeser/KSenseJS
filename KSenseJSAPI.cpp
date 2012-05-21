@@ -36,6 +36,10 @@ int KSenseJSAPI::get_tracked_skeletons_count()
 	KSenseJSPtr plugin = getPlugin();
 	SkeletonDataPtr skeleton_data = plugin->getSkeletonDataPtr();
 
+	if ( !skeleton_data ) {
+		return 0;
+	}
+
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
 		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
 			tracked_skeleton_count++;
@@ -51,6 +55,10 @@ FB::VariantList KSenseJSAPI::get_valid_tracking_ids()
 	KSenseJSPtr plugin = getPlugin();
 	SkeletonDataPtr skeleton_data = plugin->getSkeletonDataPtr();
 	FB::VariantList tracking_ids;
+
+	if ( !skeleton_data ) {
+		return tracking_ids;
+	}
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
 		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
@@ -69,6 +77,10 @@ FB::VariantList KSenseJSAPI::get_skeleton_data(int tracking_id)
 	SkeletonDataPtr skeleton_data = plugin->getSkeletonDataPtr();
 	FB::VariantList skeleton_data_output (NUI_SKELETON_POSITION_COUNT, 0);
 	bool found_data = false;
+
+	if ( !skeleton_data ) {
+		throw FB::script_error("No skeleton data.");
+	}
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
 		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
