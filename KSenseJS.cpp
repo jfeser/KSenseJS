@@ -59,14 +59,16 @@ KSenseJS::~KSenseJS()
 /*	Called once the plugin is loaded. */
 void KSenseJS::onPluginReady()
 {
-	kinect_interface = KinectInterface::getKinectInterface();
-	if ( !kinect_interface->isInitialized() ) {
-		m_host->htmlLog("Kinect initialization failed.");
-	} else {
+	kinect_interface = KinectInterface::get();
+	if ( kinect_interface->isInitialized() ) {
 		m_host->htmlLog("Kinect initialization succeeded.");
+	} else {
+		m_host->htmlLog("Kinect initialization failed.");
 	}
+
 	// Register to get skeleton data
 	kinect_interface->registerSkeletonDataCallback(this);
+
 	// Get a reference to the root JSAPI object so that we can fire skeleton events
 	jsapi = getRootJSAPI();
 }
