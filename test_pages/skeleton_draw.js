@@ -22,16 +22,20 @@ function is_tracking() {
 
 function handle_new_data() {
     if ( is_tracking() ) {
-        var id = get_valid_id();
-        var data = get_skeleton_data(id);
-        draw_data(data);
+        var tracking_ids = plugin().trackedSkeletonIDs;
+        //console.log(tracking_ids);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for ( var i = 0, l = tracking_ids.length; i < l; i++ ) {
+            var id = tracking_ids[i];
+            var data = get_skeleton_data(id);
+            draw_data(data);
+        }
     }
 }
 
 function draw_data(skeleton_data) {
     var width = canvas.width;
     var height = canvas.height;
-    ctx.clearRect(0,0,width,height);
     for( var joint = 0, l = skeleton_data.length; joint < l; joint++ ) {
         var x = skeleton_data[joint][0];
         var y = skeleton_data[joint][1];
