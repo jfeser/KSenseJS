@@ -4,7 +4,7 @@ function plugin()
 }
 
 function get_valid_id() {
-    tracking_ids = plugin().trackedSkeletonIDs;
+    var tracking_ids = plugin().trackedSkeletonIDs;
     return tracking_ids.shift();
 }
 
@@ -13,7 +13,7 @@ function get_skeleton_data(tracking_id) {
 }
 
 function is_tracking() {
-    tracking_ids = plugin().trackedSkeletonIDs;
+    var tracking_ids = plugin().trackedSkeletonIDs;
     if( tracking_ids.length > 0 ) {
         return true;
     }
@@ -58,6 +58,8 @@ function scale_data(x, y, canvas_x, canvas_y) {
     return [x,y];
 }
 
+var canvas;
+var ctx;
 
 window.onload = function() {
     document.getElementById('plugin0').addEventListener("newskeletondata", handle_new_data, false);
