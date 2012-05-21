@@ -8,6 +8,8 @@
 
 #include "PluginCore.h"
 
+class KSenseJS;
+
 FB_FORWARD_PTR(KinectInterface)
 typedef boost::shared_ptr<NUI_SKELETON_FRAME> SkeletonDataPtr;
 

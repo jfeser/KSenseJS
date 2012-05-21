@@ -16,6 +16,8 @@
 #include "PluginCore.h"
 #include "KinectInterface.h"
 
+class KinectInterface;
+
 FB_FORWARD_PTR(KSenseJS)
 class KSenseJS : public FB::PluginCore
 {
