@@ -52,10 +52,21 @@ DWORD WINAPI KinectInterface::kinectMonitor( LPVOID lpParam )
 	return 0;
 }
 
+void CALLBACK KinectInterface::Nui_StatusProcThunk( HRESULT hrStatus, const OLECHAR* instanceName, const OLECHAR* uniqueDeviceName, void * pUserData )
+{
+    reinterpret_cast<KinectInterface *>(pUserData)->Nui_StatusProc( hrStatus, instanceName, uniqueDeviceName );
+}
+
+void CALLBACK KinectInterface::Nui_StatusProc( HRESULT hrStatus, const OLECHAR* instanceName, const OLECHAR* uniqueDeviceName )
+{
+}
+
 /*	Initialize the Kinect.  Set up the new data event and launch a thread to monitor the
 	Kinect. */
 HRESULT KinectInterface::initializeKinect() 
 {
+	NuiSetDeviceStatusCallback( &Nui_StatusProcThunk, NULL );
+
 	HRESULT hr = NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON);
 	if ( FAILED(hr) ) { return hr; }
 

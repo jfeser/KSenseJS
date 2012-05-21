@@ -22,6 +22,10 @@ public:
 	static KinectInterfacePtr get();
 	bool isInitialized() const;
 
+	// Needed to avoid crashing on page reloads.  Make less annoying later.
+	static void CALLBACK    Nui_StatusProcThunk(HRESULT hrStatus, const OLECHAR* instanceName, const OLECHAR* uniqueDeviceName, void* pUserData);
+    void CALLBACK           Nui_StatusProc( HRESULT hrStatus, const OLECHAR* instanceName, const OLECHAR* uniqueDeviceName );
+
 private:
 	KinectInterface();
 	HRESULT initializeKinect();
