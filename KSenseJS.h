@@ -14,9 +14,9 @@
 #include "PluginEvents/AttachedEvent.h"
 
 #include "PluginCore.h"
+#include "KinectInterface.h"
 
-#include <Windows.h>
-#include <NuiApi.h>
+class KinectInterface;
 
 FB_FORWARD_PTR(KSenseJS)
 class KSenseJS : public FB::PluginCore
@@ -28,6 +28,7 @@ public:
 public:
     KSenseJS();
     virtual ~KSenseJS();
+	SkeletonDataPtr getSkeletonDataPtr() const;
 
 public:
     void onPluginReady();
@@ -56,22 +57,13 @@ public:
     virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
     /** END EVENTDEF -- DON'T CHANGE THIS LINE **/
 
-	// Skeletons
-	NUI_SKELETON_FRAME		last_skeleton_frame;
+	void onNewSkeletonData(SkeletonDataPtr);
 
 private:
-	// Callbacks
-	void					gotSkeletonAlert();
-	HANDLE					next_skeleton_event;
-
-	// Threading
-	static DWORD WINAPI		kinectMonitor(LPVOID);
-	HANDLE					kinect_monitor_stop;
-	HANDLE					kinect_monitor_thread;
-
+	SkeletonDataPtr			skeleton_data;
 	FB::JSAPIPtr			jsapi;
+	KinectInterfacePtr		kinect_interface;
 };
-
 
 #endif
 
