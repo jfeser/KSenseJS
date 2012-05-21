@@ -71,7 +71,7 @@ FB::VariantList KSenseJSAPI::get_valid_tracking_ids()
 
 /*	Get the skeleton data that corresponds to the given tracking ID.  If the tracking
 	ID is invalid, throw an error. */
-FB::VariantList KSenseJSAPI::get_skeleton_data(int tracking_id)
+FB::VariantList KSenseJSAPI::get_skeleton_data(const int tracking_id)
 {
 	KSenseJSPtr plugin = getPlugin();
 	SkeletonDataPtr skeleton_data = plugin->getSkeletonDataPtr();

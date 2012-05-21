@@ -120,14 +120,13 @@ KinectInterfacePtr KinectInterface::get()
 }
 
 /*	Check whether the Kinect has been correctly initialized. */
-bool KinectInterface::isInitialized()
+bool KinectInterface::isInitialized() const
 {
 	return initialized;
 }
 
-
 /*	Add KinectJS pointer to callback list. */
-void KinectInterface::registerSkeletonDataCallback(KSenseJS* c)
+void KinectInterface::registerSkeletonDataCallback(KSenseJS* const c)
 {
 	if ( c != NULL ) {
 		callback_objects.insert(c);
@@ -135,7 +134,7 @@ void KinectInterface::registerSkeletonDataCallback(KSenseJS* c)
 }
 
 /*	Remove KinectJS pointer from callback list. */
-void KinectInterface::unregisterSkeletonDataCallback(KSenseJS* c)
+void KinectInterface::unregisterSkeletonDataCallback(KSenseJS* const c)
 {
 	std::set<KSenseJS*>::iterator callback_location = callback_objects.find(c);
 	if ( callback_location != callback_objects.end() ) {

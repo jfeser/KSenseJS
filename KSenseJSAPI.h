@@ -58,7 +58,7 @@ public:
 	
 	int get_tracked_skeletons_count();
 	FB::VariantList get_valid_tracking_ids();
-	FB::VariantList get_skeleton_data(int);
+	FB::VariantList get_skeleton_data(const int);
 	void new_skeleton_data_event();
 
 private:

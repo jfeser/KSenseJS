@@ -17,10 +17,10 @@ class KinectInterface : boost::noncopyable
 {
 public:
 	~KinectInterface();
-	void registerSkeletonDataCallback(KSenseJS*);
-	void unregisterSkeletonDataCallback(KSenseJS*);
+	void registerSkeletonDataCallback(KSenseJS* const);
+	void unregisterSkeletonDataCallback(KSenseJS* const);
 	static KinectInterfacePtr get();
-	bool isInitialized();
+	bool isInitialized() const;
 
 private:
 	KinectInterface();

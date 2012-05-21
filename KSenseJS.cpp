@@ -138,7 +138,7 @@ void KSenseJS::onNewSkeletonData(SkeletonDataPtr new_skeleton_data)
 	jsapi->Invoke("newSkeletonDataEvent", args);
 }
 
-SkeletonDataPtr KSenseJS::getSkeletonDataPtr()
+SkeletonDataPtr KSenseJS::getSkeletonDataPtr() const
 {
 	return skeleton_data;
 }

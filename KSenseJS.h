@@ -28,7 +28,7 @@ public:
 public:
     KSenseJS();
     virtual ~KSenseJS();
-	SkeletonDataPtr getSkeletonDataPtr();
+	SkeletonDataPtr getSkeletonDataPtr() const;
 
 public:
     void onPluginReady();
