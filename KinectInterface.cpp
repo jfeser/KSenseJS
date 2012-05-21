@@ -37,10 +37,12 @@ DWORD WINAPI KinectInterface::kinectMonitor( LPVOID lpParam )
 			case WAIT_TIMEOUT:
 				continue;
 
+			// Kinect monitor stop
 			case WAIT_OBJECT_0:
 				continueProcessing = false;
 				continue;
 
+			// New skeleton data
 			case WAIT_OBJECT_0 + 1:
 				pthis->onSkeletonEvent();
 				break;
@@ -123,10 +125,15 @@ bool KinectInterface::isInitialized()
 	return initialized;
 }
 
+
+/*	Add KinectJS pointer to callback list. */
 void KinectInterface::registerSkeletonDataCallback(KSenseJS* c)
 {
 	if ( c != NULL ) {
-		callback_objects.push_front(c);
+		callback_objects.insert(c);
+	}
+}
+
 /*	Remove KinectJS pointer from callback list. */
 void KinectInterface::unregisterSkeletonDataCallback(KSenseJS* c)
 {
@@ -167,12 +174,7 @@ void KinectInterface::onSkeletonEvent()
 	boost::shared_ptr<NUI_SKELETON_FRAME> skeleton_data_ptr(skeleton_data);
 	// Iterate through the list of callbacks and give each a pointer to the new
 	// skeleton data.
-	for ( std::list<KSenseJS*>::iterator it = callback_objects.begin(); it != callback_objects.end(); it++) {
-		// If the plugin object disappears, remove it from the callbacks list
-		if ( !(*it) ) {
-			callback_objects.erase(it);
-			continue;
-		}
+	for ( std::set<KSenseJS*>::iterator it = callback_objects.begin(); it != callback_objects.end(); it++ ) {
 		(*it)->onNewSkeletonData(skeleton_data_ptr);
 	}
 }

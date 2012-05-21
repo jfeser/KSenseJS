@@ -36,9 +36,9 @@ private:
 	HANDLE							kinect_monitor_thread;
 
 	// Callbacks
-	std::list<KSenseJS*>		callback_objects;
-	void						onSkeletonEvent();
-	HANDLE						skeleton_event;
+	std::set<KSenseJS*>				callback_objects;
+	void							onSkeletonEvent();
+	HANDLE							skeleton_event;
 };
 
 #endif //KINECT_INTERFACE
