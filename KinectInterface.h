@@ -18,7 +18,7 @@ class KinectInterface : boost::noncopyable
 public:
 	~KinectInterface();
 	void registerSkeletonDataCallback(KSenseJS*);
-	static KinectInterfacePtr getKinectInterface();
+	static KinectInterfacePtr get();
 	bool isInitialized();
 
 private:
@@ -26,8 +26,8 @@ private:
 	HRESULT initializeKinect();
 	void shutdownKinect();
 	
-	static KinectInterfacePtr	instance;
-	bool						initialized;
+	static KinectInterfaceWeakPtr	singleton;
+	bool							initialized;
 
 	// Threading
 	static DWORD WINAPI __stdcall	kinectMonitor(LPVOID);

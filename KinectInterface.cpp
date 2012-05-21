@@ -98,18 +98,21 @@ void KinectInterface::shutdownKinect()
 
 /*	Get a pointer to the KinectInterface.  Only allow one copy to be created.  When the
 	first copy is created, initialize the Kinect. */
-KinectInterfacePtr KinectInterface::getKinectInterface()
+KinectInterfacePtr KinectInterface::get()
 {
+	KinectInterfacePtr instance = singleton.lock();
 	if (!instance) {
-		instance = boost::make_shared<KinectInterface>();
+		instance.reset(new KinectInterface());
+		singleton = instance;
 
 		HRESULT hr = instance->initializeKinect();
 		// If something goes wrong, shut everything down
 		if ( FAILED(hr) ) {
 			instance->shutdownKinect();
 			instance->initialized = false;
+		} else {
+			instance->initialized = true;
 		}
-		instance->initialized = true;
 	}
 	return instance;
 }
@@ -167,3 +170,5 @@ void KinectInterface::onSkeletonEvent()
 		(*it)->onNewSkeletonData(skeleton_data_ptr);
 	}
 }
+
+KinectInterfaceWeakPtr KinectInterface::singleton = KinectInterfaceWeakPtr();
