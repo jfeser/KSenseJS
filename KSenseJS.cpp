@@ -52,6 +52,10 @@ KSenseJS::~KSenseJS()
     // root object) and tell the host to free the retained JSAPI objects then
     // unless you are holding another shared_ptr reference to your JSAPI object
     // they will be released here.
+
+	// We really don't want to try to handle new skeleton data while destroying a
+	// plugin object.
+	kinect_interface->unregisterSkeletonDataCallback(this);
     releaseRootJSAPI();
     m_host->freeRetainedObjects();
 }

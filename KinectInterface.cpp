@@ -127,6 +127,12 @@ void KinectInterface::registerSkeletonDataCallback(KSenseJS* c)
 {
 	if ( c != NULL ) {
 		callback_objects.push_front(c);
+/*	Remove KinectJS pointer from callback list. */
+void KinectInterface::unregisterSkeletonDataCallback(KSenseJS* c)
+{
+	std::set<KSenseJS*>::iterator callback_location = callback_objects.find(c);
+	if ( callback_location != callback_objects.end() ) {
+		callback_objects.erase(callback_location);
 	}
 }
 
