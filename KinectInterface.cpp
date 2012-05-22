@@ -52,6 +52,7 @@ DWORD WINAPI KinectInterface::kinectMonitor( LPVOID lpParam )
 	return 0;
 }
 
+/*	Dummy callback that includes a pointer to the originial KinectInterface. */
 void CALLBACK KinectInterface::Nui_StatusProcThunk( HRESULT hrStatus, const OLECHAR* instanceName, const OLECHAR* uniqueDeviceName, void * pUserData )
 {
     reinterpret_cast<KinectInterface *>(pUserData)->Nui_StatusProc( hrStatus, instanceName, uniqueDeviceName );
@@ -181,7 +182,7 @@ void KinectInterface::onSkeletonEvent()
         return;
     }
 
-	boost::shared_ptr<NUI_SKELETON_FRAME> skeleton_data_ptr(skeleton_data);
+	SkeletonDataPtr skeleton_data_ptr(skeleton_data);
 	// Iterate through the list of callbacks and give each a pointer to the new
 	// skeleton data.
 	for ( std::set<KSenseJS*>::iterator it = callback_objects.begin(); it != callback_objects.end(); it++ ) {

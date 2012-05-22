@@ -60,9 +60,9 @@ public:
 	void onNewSkeletonData(SkeletonDataPtr);
 
 private:
-	SkeletonDataPtr			skeleton_data;
-	FB::JSAPIPtr			jsapi;
-	KinectInterfacePtr		kinect_interface;
+	SkeletonDataPtr		skeleton_data;
+	FB::JSAPIPtr		jsapi;
+	KinectInterfacePtr	kinect_interface;
 };
 
 #endif
