@@ -84,7 +84,7 @@ FB::VariantList KSenseJSAPI::get_skeleton_data(const int tracking_id)
 
 	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
 		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
-			 skeleton_data->SkeletonData[i].dwTrackingID ) {
+			 skeleton_data->SkeletonData[i].dwTrackingID == tracking_id ) {
 			found_data = true;
 			for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
 				FB::VariantList position (3,0);
