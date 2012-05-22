@@ -133,12 +133,28 @@ bool KSenseJS::onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *)
 void KSenseJS::onNewSkeletonData(SkeletonDataPtr new_skeleton_data)
 {
 	// Store the new data pointer and let the API know that new data is available.
-	skeleton_data = new_skeleton_data;
+	previous_skeleton_data = current_skeleton_data;
+	current_skeleton_data = new_skeleton_data;
+
+	if ( current_skeleton_data && previous_skeleton_data ) {
+		delta_time = current_skeleton_data->liTimeStamp.QuadPart - previous_skeleton_data->liTimeStamp.QuadPart;
+	}
+
 	FB::VariantList args;
 	jsapi->Invoke("newSkeletonDataEvent", args);
 }
 
-SkeletonDataPtr KSenseJS::getSkeletonDataPtr() const
+SkeletonDataPtr KSenseJS::getCurrentSkeletonDataPtr() const
 {
-	return skeleton_data;
+	return current_skeleton_data;
+}
+
+SkeletonDataPtr KSenseJS::getPreviousSkeletonDataPtr() const
+{
+	return previous_skeleton_data;
+}
+
+__int64 KSenseJS::getDeltaTime() const
+{
+	return delta_time;
 }

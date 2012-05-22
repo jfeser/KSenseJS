@@ -61,6 +61,9 @@ public:
 	FB::VariantList get_skeleton_data(const int);
 	void new_skeleton_data_event();
 
+
+	NUI_SKELETON_DATA const* getDataByTrackingID(const int);
+	NUI_SKELETON_DATA const* getDataByTrackingID(const int, SkeletonDataPtr);
 private:
     KSenseJSWeakPtr m_plugin;
     FB::BrowserHostPtr m_host;

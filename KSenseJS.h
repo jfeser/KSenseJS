@@ -28,7 +28,10 @@ public:
 public:
     KSenseJS();
     virtual ~KSenseJS();
-	SkeletonDataPtr getSkeletonDataPtr() const;
+
+	SkeletonDataPtr getCurrentSkeletonDataPtr() const;
+	SkeletonDataPtr getPreviousSkeletonDataPtr() const;
+	__int64			getDeltaTime() const;
 
 public:
     void onPluginReady();
@@ -60,7 +63,10 @@ public:
 	void onNewSkeletonData(SkeletonDataPtr);
 
 private:
-	SkeletonDataPtr		skeleton_data;
+	SkeletonDataPtr		current_skeleton_data;
+	SkeletonDataPtr		previous_skeleton_data;
+	__int64				delta_time;
+
 	FB::JSAPIPtr		jsapi;
 	KinectInterfacePtr	kinect_interface;
 };
