@@ -29,7 +29,7 @@ public:
     /// @see FB::JSAPIAuto::registerEvent
     ////////////////////////////////////////////////////////////////////////////
     KSenseJSAPI(const KSenseJSPtr& plugin, const FB::BrowserHostPtr& host) :
-        m_plugin(plugin), m_host(host)
+        m_plugin(plugin)//, m_host(host)
     {
 		registerMethod("getSkeletonData", make_method(this, &KSenseJSAPI::get_skeleton_data));
 		registerMethod("getVelocityData", make_method(this, &KSenseJSAPI::getJointVelocity));
@@ -70,7 +70,7 @@ public:
 
 private:
     KSenseJSWeakPtr m_plugin;
-    FB::BrowserHostPtr m_host;
+    //FB::BrowserHostPtr m_host;
 };
 
 #endif // H_KSenseJSAPI
