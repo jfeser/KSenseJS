@@ -31,16 +31,11 @@ public:
     KSenseJSAPI(const KSenseJSPtr& plugin, const FB::BrowserHostPtr& host) :
         m_plugin(plugin)//, m_host(host)
     {
-		registerMethod("getSkeletonData", make_method(this, &KSenseJSAPI::get_skeleton_data));
-		registerMethod("getVelocityData", make_method(this, &KSenseJSAPI::getJointVelocity));
+		registerMethod("getSkeletonData", make_method(this, &KSenseJSAPI::getSkeletonData));
+		registerMethod("getVelocityData", make_method(this, &KSenseJSAPI::getVelocityData));
 		// There is never a good reason to call this from javascript.  It should only
 		// be called by the plugin object.
 		registerMethod("newSkeletonDataEvent", make_method(this, &KSenseJSAPI::new_skeleton_data_event));
-
-		registerProperty("trackedSkeletonCount", 
-						 make_property(this, &KSenseJSAPI::get_tracked_skeletons_count));
-		registerProperty("trackedSkeletonIDs",
-						 make_property(this, &KSenseJSAPI::get_valid_tracking_ids));
 
 		FBLOG_DEBUG("KinectJSAPI()", "Created KinectJSAPI");
     }
@@ -60,15 +55,9 @@ public:
 	FB_JSAPI_EVENT(newskeletondata, 0, ());
 	
 	// API functions
-	int get_tracked_skeletons_count();
-	FB::VariantList get_valid_tracking_ids();
-	FB::VariantList get_skeleton_data(const int);
+	FB::VariantMap getSkeletonData();
+	FB::VariantMap getVelocityData();
 	void new_skeleton_data_event();
-
-	FB::VariantList getJointVelocity(const int);
-
-	NUI_SKELETON_DATA const* getDataByTrackingID(const int);
-	NUI_SKELETON_DATA const* getDataByTrackingID(const int, SkeletonDataPtr);
 
 private:
     KSenseJSWeakPtr m_plugin;
