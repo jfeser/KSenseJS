@@ -175,12 +175,14 @@ void KinectInterface::onSkeletonEvent()
 
 	// If we find no skeletons, return.
 	if ( !found_skeleton ) {
+		delete skeleton_data;
 		return;
 	}
 
 	// Smooth out the skeleton data
     HRESULT hr = NuiTransformSmooth(skeleton_data, NULL);
     if ( FAILED(hr) ) {
+		delete skeleton_data;
         return;
     }
 
