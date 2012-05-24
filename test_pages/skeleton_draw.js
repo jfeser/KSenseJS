@@ -3,9 +3,8 @@ function plugin()
     return document.getElementById('plugin0');
 }
 
-function get_valid_id() {
-    var tracking_ids = plugin().trackedSkeletonIDs;
-    return tracking_ids.shift();
+function get_tracking_ids() {
+    return plugin().trackedSkeletonIDs;
 }
 
 function get_skeleton_data(tracking_id) {
@@ -17,7 +16,7 @@ function get_joint_velocity(tracking_id) {
 }
 
 function is_tracking() {
-    var tracking_ids = plugin().trackedSkeletonIDs;
+    var tracking_ids = get_tracking_ids();
     if( tracking_ids.length > 0 ) {
         return true;
     }
@@ -26,17 +25,23 @@ function is_tracking() {
 
 function handle_new_data() {
     if ( is_tracking() ) {
-        var tracking_ids = plugin().trackedSkeletonIDs;
-        //console.log(tracking_ids);
+        var tracking_ids = get_tracking_ids();
+
         ctx.clearRect(0,0,canvas.width,canvas.height);
+
         for ( var i = 0, l = tracking_ids.length; i < l; i++ ) {
             var id = tracking_ids[i];
-            var data = get_skeleton_data(id);
+
+            try {
+                var data = get_skeleton_data(id);
+            } catch (err) {
+                continue;
+            }
             var velocity = get_joint_velocity(id);
 
             var width = canvas.width;
             var height = canvas.height;
-            for( var joint = 0, l = data.length; joint < l; joint++ ) {
+            for( var joint = 0, l_d = data.length; joint < l_d; joint++ ) {
                 var x = data[joint][0];
                 var y = data[joint][1];
                 var scaled_coord = scale_data(x,y,width,height);
