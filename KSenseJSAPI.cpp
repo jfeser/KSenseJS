@@ -29,7 +29,6 @@ KSenseJSPtr KSenseJSAPI::getPlugin()
     return plugin;
 }
 
-
 /*	Get the number of skeletons tracked by the Kinect. */
 int KSenseJSAPI::get_tracked_skeletons_count()
 {

@@ -77,8 +77,6 @@ void KSenseJS::onPluginReady()
 	kinect_interface->registerSkeletonDataCallback(this);
 }
 
-/*	Called when the plugin is unloaded.  Disconnect from the Kinect, shut down the
-	monitoring thread and close all handles here. */
 void KSenseJS::shutdown()
 {
 }
