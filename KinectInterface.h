@@ -5,8 +5,9 @@
 #include <boost/utility.hpp>
 #include <Windows.h>
 #include <NuiApi.h>
+#include <set>
 
-#include "PluginCore.h"
+#include "FBPointers.h"
 
 class KSenseJS;
 
