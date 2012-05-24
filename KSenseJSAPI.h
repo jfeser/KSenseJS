@@ -41,6 +41,8 @@ public:
 						 make_property(this, &KSenseJSAPI::get_tracked_skeletons_count));
 		registerProperty("trackedSkeletonIDs",
 						 make_property(this, &KSenseJSAPI::get_valid_tracking_ids));
+
+		FBLOG_DEBUG("KinectJSAPI()", "Created KinectJSAPI");
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -50,7 +52,7 @@ public:
     ///         the browser is done with it; this will almost definitely be after
     ///         the plugin is released.
     ///////////////////////////////////////////////////////////////////////////////
-    virtual ~KSenseJSAPI() {};
+    virtual ~KSenseJSAPI() {FBLOG_DEBUG("~KinectJSAPI()", "Destroyed KinectJSAPI");};
 
     KSenseJSPtr getPlugin();
     

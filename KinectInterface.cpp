@@ -9,11 +9,13 @@
 
 KinectInterface::KinectInterface()
 {
+	FBLOG_DEBUG("KinectInterface()", "Created KinectInterface");
 }
 
 KinectInterface::~KinectInterface()
 {
 	shutdownKinect();
+	FBLOG_DEBUG("~KinectInterface()", "Destroyed KinectInterface");
 }
 
 /*	Get data from the Kinect using a separate thread.  Call onSkeletonEvent to handle that
