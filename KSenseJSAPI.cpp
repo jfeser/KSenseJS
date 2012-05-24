@@ -132,16 +132,27 @@ FB::VariantList KSenseJSAPI::get_skeleton_data(const int tracking_id)
 	return skeleton_data_output;
 }
 
+//FB::VariantList KSenseJSAPI::getBoneLengths(const int tracking_id)
+//{
+//	FB::VariantList bone_lengths_output (NUI_SKELETON_POSITION_COUNT, 0);
+//	NUI_SKELETON_DATA const* skeleton_data = getDataByTrackingID(tracking_id);
+//
+//	for ( int i = 0; i < NUI_SKELETON_POSITION_COUNT; i++ ) {
+//
+//}
+
 inline float square(float x)
 {
 	return x*x;
 }
 
+/*	Calculate the velocity since the last frame of skeleton data and send to the
+	javascript. */
 FB::VariantList KSenseJSAPI::getJointVelocity(const int tracking_id)
 {
 	FB::VariantList joint_velocity (NUI_SKELETON_POSITION_COUNT, 0);
 	KSenseJSPtr plugin = getPlugin();
-	SkeletonDataPtr current_ptr = plugin->getCurrentSkeletonDataPtr(); 
+	SkeletonDataPtr current_ptr = plugin->getCurrentSkeletonDataPtr();
 	SkeletonDataPtr previous_ptr = plugin->getPreviousSkeletonDataPtr();
 
 	NUI_SKELETON_DATA const* current = getDataByTrackingID(tracking_id, current_ptr);
@@ -149,11 +160,13 @@ FB::VariantList KSenseJSAPI::getJointVelocity(const int tracking_id)
 	float v_x, v_y, v_z;
 
 	for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
-		FB::VariantList velocity (4,0);
-		velocity[1] = v_x = current->SkeletonPositions[j].x - previous->SkeletonPositions[j].x;
-		velocity[2] = v_y = current->SkeletonPositions[j].y - previous->SkeletonPositions[j].y;
-		velocity[3] = v_z = current->SkeletonPositions[j].z - previous->SkeletonPositions[j].z;
-		velocity[0] = sqrt(square(v_x)+square(v_y)+square(v_z));
+		FB::VariantList velocity (4,0.0f);
+		if (current && previous) {
+			velocity[1] = v_x = current->SkeletonPositions[j].x - previous->SkeletonPositions[j].x;
+			velocity[2] = v_y = current->SkeletonPositions[j].y - previous->SkeletonPositions[j].y;
+			velocity[3] = v_z = current->SkeletonPositions[j].z - previous->SkeletonPositions[j].z;
+			velocity[0] = sqrt(square(v_x)+square(v_y)+square(v_z));
+		}
 		joint_velocity[j] = velocity;
 	}
 
