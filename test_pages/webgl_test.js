@@ -83,48 +83,19 @@ function create_scene() {
     scene.add(pointLight);
 }
 
-function start() {
+window.onload = function() {
     create_scene();
-    document.getElementById('plugin0').addEventListener("newskeletondata", handle_new_data, false);
-}
-
-function plugin()
-{
-    return document.getElementById('plugin0');
-}
-
-function get_valid_id() {
-    var tracking_ids = plugin().trackedSkeletonIDs;
-    return tracking_ids.shift();
-}
-
-function get_skeleton_data(tracking_id) {
-    return plugin().getSkeletonData(tracking_id);
-}
-
-function get_joint_velocity(tracking_id) {
-    return plugin().getVelocityData(tracking_id);
-}
-
-function is_tracking() {
-    var tracking_ids = plugin().trackedSkeletonIDs;
-    if( tracking_ids.length > 0 ) {
-        return true;
-    }
-    return false;
+    ksensejs.initialize();
+    ksensejs.set_new_data_callback(handle_new_data);
 }
 
 function handle_new_data() {
-    if ( is_tracking() ) {
-        var id = get_valid_id();
-        var vel = get_joint_velocity(id);
-        var pos = get_skeleton_data(id);
-        var right_hand_v = vel[11];
-        var left_hand_p = pos[7];
-        var shoulder_center_p = pos[2];
-        if( left_hand_p[1] > shoulder_center_p[1] ) {
-            sphere.rotation.x += (-7)*right_hand_v[3];
-            sphere.rotation.y += (-7)*right_hand_v[1];
+    if ( ksensejs.is_tracking() ) {
+        var id = ksensejs.get_tracking_ids()[0];
+        var right_hand_v = ksensejs.get_joint_velocity_vector(id, 'hand_right');
+        if( ksensejs.get_joint_location(id, 'hand_left')[1] > ksensejs.get_joint_location(id, 'shoulder_center')[1] ) {
+            sphere.rotation.x += (-7)*right_hand_v[2];
+            sphere.rotation.y += (-7)*right_hand_v[0];
             renderer.render(scene, camera);
         }
     }

@@ -1,31 +1,6 @@
-function plugin()
-{
-    return document.getElementById('plugin0');
-}
-
-function get_tracking_ids() {
-    return plugin().trackedSkeletonIDs;
-}
-
-function get_skeleton_data(tracking_id) {
-    return plugin().getSkeletonData(tracking_id);
-}
-
-function get_joint_velocity(tracking_id) {
-    return plugin().getVelocityData(tracking_id);
-}
-
-function is_tracking() {
-    var tracking_ids = get_tracking_ids();
-    if( tracking_ids.length > 0 ) {
-        return true;
-    }
-    return false;
-}
-
 function handle_new_data() {
-    if ( is_tracking() ) {
-        var tracking_ids = get_tracking_ids();
+    if ( ksensejs.is_tracking() ) {
+        var tracking_ids = ksensejs.get_tracking_ids();
 
         ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -33,15 +8,19 @@ function handle_new_data() {
             var id = tracking_ids[i];
 
             try {
-                var data = get_skeleton_data(id);
+                var data = ksensejs.get_skeleton_data(id);
             } catch (err) {
                 continue;
             }
-            var velocity = get_joint_velocity(id);
+            try {
+                var velocity = ksensejs.get_velocity_data(id);
+            } catch (err) {
+                continue;
+            }
 
             var width = canvas.width;
             var height = canvas.height;
-            for( var joint = 0, l_d = data.length; joint < l_d; joint++ ) {
+            for( var joint in data ) {
                 var x = data[joint][0];
                 var y = data[joint][1];
                 var scaled_coord = scale_data(x,y,width,height);
@@ -73,7 +52,8 @@ var canvas;
 var ctx;
 
 window.onload = function() {
-    document.getElementById('plugin0').addEventListener("newskeletondata", handle_new_data, false);
-    canvas = document.getElementById("canvas");
+    canvas = document.getElementById('canvas');
     ctx = canvas.getContext("2d");
+    ksensejs.initialize();
+    ksensejs.set_new_data_callback(handle_new_data);
 }
