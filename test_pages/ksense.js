@@ -11,42 +11,76 @@ var ksensejs = {
 
     skeleton_data : null,
     velocity_data : null,
-    tracking_ids : null,
+    callback : null,
 
     plugin : function() {
         return document.getElementById('plugin0');
     },
 
     handle_new_data : function() {
-        ksensejs.tracking_ids = ksensejs.plugin().trackedSkeletonIDs;
-        if ( ksensejs.tracking_ids.length > 0 ) {
-            ksensejs.skeleton_data = {};
-            ksensejs.velocity_data = {};
-            for ( i = 0, l = ksensejs.tracking_ids.length; i < l; i++ ) {
-                ksensejs.skeleton_data[ksensejs.tracking_ids[i]] = ksensejs.plugin().getSkeletonData(ksensejs.tracking_ids[i]);
-                ksensejs.velocity_data[ksensejs.tracking_ids[i]] = ksensejs.plugin().getVelocityData(ksensejs.tracking_ids[i]);
-            }
-        }
+        ksensejs.skeleton_data = ksensejs.plugin().getSkeletonData();
+        ksensejs.velocity_data = ksensejs.plugin().getVelocityData();
+        ksensejs.callback();
     },
 
     is_tracking : function() {
-        if( ksensejs.tracking_ids.length > 0 ) {
+        if( Object.keys(ksensejs.skeleton_data).length > 0 ) {
             return true;
         }
         return false;
     },
 
+    get_tracking_ids : function() {
+        if( ksensejs.skeleton_data === null ) {
+            return [];
+        } else {
+            return Object.keys(ksensejs.skeleton_data);
+        }
+    },
+
     get_skeleton_data : function(id) {
-        if( ksensejs.is_tracking() && $.inArray(id, ksensejs.tracking_ids) ) {
+        if( typeof ksensejs.skeleton_data[id] === "undefined" ) {
+            throw "Invalid tracking ID.";
+        } else {
             return ksensejs.skeleton_data[id];
         }
     },
 
     get_velocity_data : function(id) {
-        if( ksensejs.is_tracking() && $.inArray(id, ksensejs.tracking_ids) ) {
+        if( typeof ksensejs.velocity_data[id] === "undefined" ) {
+            throw "Invalid tracking ID.";
+        } else {
             return ksensejs.velocity_data[id];
         }
     },
-};
 
-$(document).ready(ksensejs.initialize);
+    get_joint_location : function(id, name) {
+        if( typeof ksensejs.skeleton_data[id] === "undefined" ) {
+            throw "Invalid tracking ID.";
+        } else {
+            return ksensejs.skeleton_data[id][name];
+        }
+    },
+
+    get_joint_velocity : function(id, name) {
+        if( typeof ksensejs.velocity_data[id] === "undefined" ) {
+            throw "Invalid tracking ID.";
+        } else {
+            return ksensejs.velocity_data[id][name][0];
+        }
+    },
+
+    get_joint_velocity_vector : function(id, name) {
+        if( typeof ksensejs.velocity_data[id] === "undefined" ) {
+            throw "Invalid tracking ID.";
+        } else {
+            return ksensejs.velocity_data[id][name].slice(1,4);
+        }
+    },
+
+    set_new_data_callback : function(callback) {
+        if( typeof callback === "function" ) {
+            ksensejs.callback = callback;
+        }
+    }
+};
