@@ -5,8 +5,8 @@ var renderer;
 
 function create_scene() {
     // set the scene size
-    var WIDTH = 400,
-    HEIGHT = 300;
+    var WIDTH = 500,
+    HEIGHT = 500;
 
     // set some camera attributes
     var VIEW_ANGLE = 45,
@@ -44,9 +44,14 @@ function create_scene() {
     $container.append(renderer.domElement);
 
     // set up the sphere vars
-    var radius = 50,
+    var radius = 100,
     segments = 16,
     rings = 16;
+
+    var texture = THREE.ImageUtils.loadTexture("earth.jpg");
+
+    // create the sphere's material
+    var sphereMaterial = new THREE.MeshBasicMaterial({map : texture});
 
     // create a new mesh with
     // sphere geometry - we will cover
@@ -62,13 +67,6 @@ function create_scene() {
 
     // add the sphere to the scene
     scene.add(sphere);
-
-    // create the sphere's material
-    var sphereMaterial =
-        new THREE.MeshLambertMaterial(
-            {
-                color: 0xCC0000
-            });
 
     // create a point light
     var pointLight =
