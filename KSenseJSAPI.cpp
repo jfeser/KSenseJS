@@ -9,6 +9,7 @@
 #include "DOM/Document.h"
 #include "global/config.h"
 #include <cmath>
+#include <sstream>
 
 #include "KSenseJSAPI.h"
 
@@ -29,148 +30,84 @@ KSenseJSPtr KSenseJSAPI::getPlugin()
     return plugin;
 }
 
-/*	Get the number of skeletons tracked by the Kinect. */
-int KSenseJSAPI::get_tracked_skeletons_count()
-{
-	int tracked_skeleton_count = 0;
-	KSenseJSPtr plugin = getPlugin();
-	SkeletonDataPtr skeleton_data = plugin->getCurrentSkeletonDataPtr();
-
-	if ( !skeleton_data ) {
-		return 0;
-	}
-
-	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
-		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
-			tracked_skeleton_count++;
-		}
-	}
-
-	return tracked_skeleton_count;
-}
-
-/*	Get a list of tracking IDs for the currently tracked skeletons. */
-FB::VariantList KSenseJSAPI::get_valid_tracking_ids()
-{
-	KSenseJSPtr plugin = getPlugin();
-	SkeletonDataPtr skeleton_data = plugin->getCurrentSkeletonDataPtr();
-	FB::VariantList tracking_ids;
-
-	if ( !skeleton_data ) {
-		return tracking_ids;
-	}
-
-	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
-		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
-			tracking_ids.push_back(skeleton_data->SkeletonData[i].dwTrackingID);
-		}
-	}
-
-	return tracking_ids;
-}
-
-/*	Get the skeleton data that corresponds to the given tracking ID.  If the tracking
-	ID is invalid, throw an error. */
-NUI_SKELETON_DATA const* KSenseJSAPI::getDataByTrackingID(const int tracking_id)
-{
-	KSenseJSPtr plugin = getPlugin();
-	SkeletonDataPtr skeleton_data = plugin->getCurrentSkeletonDataPtr();
-	FB::VariantList skeleton_data_output (NUI_SKELETON_POSITION_COUNT, 0);
-	bool found_data = false;
-
-	if ( !skeleton_data ) {
-		throw FB::script_error("No skeleton data.");
-	}
-
-	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
-		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
-			 skeleton_data->SkeletonData[i].dwTrackingID == tracking_id ) {
-			return &skeleton_data->SkeletonData[i];
-		}
-	}
-
-	throw FB::script_error("Invalid tracking ID");
-}
-
-/*	Get the skeleton data that corresponds to the given tracking ID.  If the tracking
-	ID is invalid, throw an error.  This version checks the given frame for data. */
-NUI_SKELETON_DATA const* KSenseJSAPI::getDataByTrackingID(const int tracking_id, SkeletonDataPtr data)
-{
-	SkeletonDataPtr skeleton_data = data;
-	FB::VariantList skeleton_data_output (NUI_SKELETON_POSITION_COUNT, 0);
-	bool found_data = false;
-
-	if ( !skeleton_data ) {
-		throw FB::script_error("No skeleton data.");
-	}
-
-	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
-		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED && 
-			 skeleton_data->SkeletonData[i].dwTrackingID == tracking_id ) {
-			return &skeleton_data->SkeletonData[i];
-		}
-	}
-
-	throw FB::script_error("Invalid tracking ID");
-}
-
-/*	Format the raw skeleton data and output using the JSAPI. */
-FB::VariantList KSenseJSAPI::get_skeleton_data(const int tracking_id)
-{
-	FB::VariantList skeleton_data_output (NUI_SKELETON_POSITION_COUNT, 0);
-	
-	NUI_SKELETON_DATA const* skeleton_data = getDataByTrackingID(tracking_id);
-
-	for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
-		FB::VariantList position (3,0);
-		position[0] = skeleton_data->SkeletonPositions[j].x;
-		position[1] = skeleton_data->SkeletonPositions[j].y;
-		position[2] = skeleton_data->SkeletonPositions[j].z;
-		skeleton_data_output[j] = position;
-	}
-
-	return skeleton_data_output;
-}
-
-//FB::VariantList KSenseJSAPI::getBoneLengths(const int tracking_id)
-//{
-//	FB::VariantList bone_lengths_output (NUI_SKELETON_POSITION_COUNT, 0);
-//	NUI_SKELETON_DATA const* skeleton_data = getDataByTrackingID(tracking_id);
-//
-//	for ( int i = 0; i < NUI_SKELETON_POSITION_COUNT; i++ ) {
-//
-//}
-
 inline float square(float x)
 {
 	return x*x;
 }
 
-/*	Calculate the velocity since the last frame of skeleton data and send to the
-	javascript. */
-FB::VariantList KSenseJSAPI::getJointVelocity(const int tracking_id)
+inline std::string intToStr(int x)
 {
-	FB::VariantList joint_velocity (NUI_SKELETON_POSITION_COUNT, 0);
+	std::stringstream stream;
+	stream << x;
+	return stream.str();
+}
+
+const std::string joint_names[] = {"hip_center", "spine", "shoulder_center", "head", 
+								"shoulder_left", "elbow_left", "wrist_left", "hand_left", 
+								"shoulder_right", "elbow_right", "wrist_right", "hand_right", 
+								"hip_left", "knee_left", "ankle_left", "foot_left", 
+								"hip_right", "knee_right", "ankle_right", "foot_right" };
+
+/*	Format the raw skeleton data and output using the JSAPI. */
+FB::VariantMap KSenseJSAPI::getSkeletonData()
+{
 	KSenseJSPtr plugin = getPlugin();
-	SkeletonDataPtr current_ptr = plugin->getCurrentSkeletonDataPtr();
-	SkeletonDataPtr previous_ptr = plugin->getPreviousSkeletonDataPtr();
+	SkeletonDataPtr skeleton_data = plugin->getCurrentSkeletonDataPtr();
+	FB::VariantMap skeleton_data_output;
 
-	NUI_SKELETON_DATA const* current = getDataByTrackingID(tracking_id, current_ptr);
-	NUI_SKELETON_DATA const* previous = getDataByTrackingID(tracking_id, previous_ptr);
-	float v_x, v_y, v_z;
-
-	for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
-		FB::VariantList velocity (4,0.0f);
-		if (current && previous) {
-			velocity[1] = v_x = current->SkeletonPositions[j].x - previous->SkeletonPositions[j].x;
-			velocity[2] = v_y = current->SkeletonPositions[j].y - previous->SkeletonPositions[j].y;
-			velocity[3] = v_z = current->SkeletonPositions[j].z - previous->SkeletonPositions[j].z;
-			velocity[0] = sqrt(square(v_x)+square(v_y)+square(v_z));
-		}
-		joint_velocity[j] = velocity;
+	if(!skeleton_data) {
+		return skeleton_data_output;
 	}
 
-	return joint_velocity;
+	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
+		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
+			FB::VariantMap joint_positions;
+			for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
+				FB::VariantList position (3,0);
+				position[0] = skeleton_data->SkeletonData[i].SkeletonPositions[j].x;
+				position[1] = skeleton_data->SkeletonData[i].SkeletonPositions[j].y;
+				position[2] = skeleton_data->SkeletonData[i].SkeletonPositions[j].z;
+				joint_positions[joint_names[j]] = position;
+			}
+			skeleton_data_output[intToStr(skeleton_data->SkeletonData[i].dwTrackingID)] = joint_positions;
+		}
+	}
+
+	return skeleton_data_output;
+}
+
+/*	Calculate the velocity since the last frame of skeleton data and send to the
+	javascript. */
+FB::VariantMap KSenseJSAPI::getVelocityData()
+{
+	KSenseJSPtr plugin = getPlugin();
+	SkeletonDataPtr current = plugin->getCurrentSkeletonDataPtr();
+	SkeletonDataPtr previous = plugin->getPreviousSkeletonDataPtr();
+	FB::VariantMap velocity_data_output;
+
+	float v_x, v_y, v_z;
+
+	if( !current || !previous ) {
+		return velocity_data_output;
+	}
+
+	for ( int i = 0; i < NUI_SKELETON_COUNT; i++ ) {
+		if ( current->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED &&
+			previous->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
+			FB::VariantMap joint_velocities;
+			for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
+				FB::VariantList velocity (4, 0.0f);
+				velocity[1] = v_x = current->SkeletonData[i].SkeletonPositions[j].x - previous->SkeletonData[i].SkeletonPositions[j].x;
+				velocity[2] = v_y = current->SkeletonData[i].SkeletonPositions[j].y - previous->SkeletonData[i].SkeletonPositions[j].y;
+				velocity[3] = v_z = current->SkeletonData[i].SkeletonPositions[j].z - previous->SkeletonData[i].SkeletonPositions[j].z;
+				velocity[0] = sqrt(square(v_x)+square(v_y)+square(v_z));
+				joint_velocities[joint_names[j]] = velocity;
+			}
+			velocity_data_output[intToStr(current->SkeletonData[i].dwTrackingID)] = joint_velocities;
+		}
+	}
+
+	return velocity_data_output;
 }
 
 void KSenseJSAPI::new_skeleton_data_event()
