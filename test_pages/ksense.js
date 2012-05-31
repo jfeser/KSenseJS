@@ -2,19 +2,16 @@ var ksensejs = {
     skeleton_data : null,
     velocity_data : null,
     callback : null,
-    initialized: false,
 
     initialize : function() {
-        if(!ksensejs.initialized) {
-            // Create a plugin object and append to the <body> element
-            var plugin_object = document.createElement('object');
-            plugin_object.setAttribute('id', 'plugin0');
-            plugin_object.setAttribute('type', 'application/x-ksensejs');
-            document.body.appendChild(plugin_object);
+        // Create a plugin object and append to the <body> element
+        var plugin_object = document.createElement('object');
+        plugin_object.setAttribute('id', 'plugin0');
+        plugin_object.setAttribute('type', 'application/x-ksensejs');
+        document.body.appendChild(plugin_object);
 
-            document.getElementById('plugin0').addEventListener("newskeletondata", ksensejs.handle_new_data, false);
-            ksensejs.initialized = true;
-        }
+        document.getElementById('plugin0').addEventListener("newskeletondata", ksensejs.handle_new_data, false);
+        ksensejs.initialized = true;
     },
 
     plugin : function() {
