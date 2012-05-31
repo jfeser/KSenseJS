@@ -73,7 +73,7 @@ var ksensejs = {
         if( typeof ksensejs.velocity_data[id] === "undefined" ) {
             throw "Invalid tracking ID.";
         } else {
-            return ksensejs.velocity_data[id][name][0];
+            return ksensejs.velocity_data[id][name]["mag"];
         }
     },
 
@@ -81,7 +81,9 @@ var ksensejs = {
         if( typeof ksensejs.velocity_data[id] === "undefined" ) {
             throw "Invalid tracking ID.";
         } else {
-            return ksensejs.velocity_data[id][name].slice(1,4);
+            return [ksensejs.velocity_data[id][name]["x"],
+                    ksensejs.velocity_data[id][name]["y"],
+                    ksensejs.velocity_data[id][name]["z"]];
         }
     },
 

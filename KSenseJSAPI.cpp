@@ -63,10 +63,10 @@ FB::VariantMap KSenseJSAPI::getSkeletonData()
 		if ( skeleton_data->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
 			FB::VariantMap joint_positions;
 			for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
-				FB::VariantList position (3,0);
-				position[0] = skeleton_data->SkeletonData[i].SkeletonPositions[j].x;
-				position[1] = skeleton_data->SkeletonData[i].SkeletonPositions[j].y;
-				position[2] = skeleton_data->SkeletonData[i].SkeletonPositions[j].z;
+				FB::VariantMap position;
+				position["x"] = skeleton_data->SkeletonData[i].SkeletonPositions[j].x;
+				position["y"] = skeleton_data->SkeletonData[i].SkeletonPositions[j].y;
+				position["z"] = skeleton_data->SkeletonData[i].SkeletonPositions[j].z;
 				joint_positions[joint_names[j]] = position;
 			}
 			skeleton_data_output[intToStr(skeleton_data->SkeletonData[i].dwTrackingID)] = joint_positions;
@@ -96,11 +96,11 @@ FB::VariantMap KSenseJSAPI::getVelocityData()
 			previous->SkeletonData[i].eTrackingState == NUI_SKELETON_TRACKED ) {
 			FB::VariantMap joint_velocities;
 			for ( int j = 0; j < NUI_SKELETON_POSITION_COUNT; j++ ) {
-				FB::VariantList velocity (4, 0.0f);
-				velocity[1] = v_x = current->SkeletonData[i].SkeletonPositions[j].x - previous->SkeletonData[i].SkeletonPositions[j].x;
-				velocity[2] = v_y = current->SkeletonData[i].SkeletonPositions[j].y - previous->SkeletonData[i].SkeletonPositions[j].y;
-				velocity[3] = v_z = current->SkeletonData[i].SkeletonPositions[j].z - previous->SkeletonData[i].SkeletonPositions[j].z;
-				velocity[0] = sqrt(square(v_x)+square(v_y)+square(v_z));
+				FB::VariantMap velocity;
+				velocity["x"] = v_x = current->SkeletonData[i].SkeletonPositions[j].x - previous->SkeletonData[i].SkeletonPositions[j].x;
+				velocity["y"] = v_y = current->SkeletonData[i].SkeletonPositions[j].y - previous->SkeletonData[i].SkeletonPositions[j].y;
+				velocity["z"] = v_z = current->SkeletonData[i].SkeletonPositions[j].z - previous->SkeletonData[i].SkeletonPositions[j].z;
+				velocity["mag"] = sqrt(square(v_x)+square(v_y)+square(v_z));
 				joint_velocities[joint_names[j]] = velocity;
 			}
 			velocity_data_output[intToStr(current->SkeletonData[i].dwTrackingID)] = joint_velocities;
