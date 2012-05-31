@@ -21,12 +21,12 @@ function handle_new_data() {
             var width = canvas.width;
             var height = canvas.height;
             for( var joint in data ) {
-                var x = data[joint][0];
-                var y = data[joint][1];
+                var x = data[joint].x;
+                var y = data[joint].y;
                 var scaled_coord = scale_data(x,y,width,height);
                 x = scaled_coord[0];
                 y = scaled_coord[1];
-                ctx.fillRect(x,height-y,5+100*velocity[joint][0],5+100*velocity[joint][0]);
+                ctx.fillRect(x,height-y,5+100*velocity[joint].mag,5+100*velocity[joint].mag);
             }
         }
     }
