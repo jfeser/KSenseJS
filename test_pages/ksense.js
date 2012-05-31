@@ -20,7 +20,10 @@ var ksensejs = {
     handle_new_data : function() {
         ksensejs.skeleton_data = ksensejs.plugin().getSkeletonData();
         ksensejs.velocity_data = ksensejs.plugin().getVelocityData();
-        ksensejs.callback();
+
+        if( !(ksensejs.callback === null) ) {
+            ksensejs.callback();
+        }
     },
 
     is_tracking : function() {
