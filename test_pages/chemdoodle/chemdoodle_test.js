@@ -1,5 +1,7 @@
+"use strict";
+
 function handle_new_data() {
-    if ( ksensejs.is_tracking() ) {
+    if(ksensejs.is_tracking()) {
         var id = ksensejs.get_tracking_ids()[0];
         var right_hand = ksensejs.get_joint_location(id, 'hand_right');
 
@@ -10,6 +12,27 @@ function handle_new_data() {
         e['p']['y'] = coord[1];
         transform_canvas.drag(e);
     }
+}
+
+// x,y,z are rotations around the named axes in radians
+// see http://www.cprogramming.com/tutorial/3d/rotationMatrices.html
+function generate_rotation_matrix(x, y, z) {
+    var x_rot = $M([
+        [1,0,0,0],
+        [0,Math.cos(x), Math.sin(x),0],
+        [0,-Math.sin(x), Math.cos(x),0],
+        [0,0,0,1]]);
+    var y_rot = $M([
+        [Math.cos(y), 0, -Math.sin(y), 0],
+        [0, 1, 0, 1],
+        [Math.sin(y), 0, Math.cos(y), 0],
+        [0,0,0,1]]);
+    var z_rot = $M([
+        [Math.cos(z), Math.sin(z), 0, 0],
+        [-Math.sin(z), Math.cos(z), 0, 0],
+        [0,0,1,0],
+        [0,0,0,1]]);
+    return (x_rot.x(y_rot)).x(z_rot);
 }
 
 var transform_canvas;
