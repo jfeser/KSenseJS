@@ -85,5 +85,33 @@ var ksensejs = {
         if( typeof callback === "function" ) {
             ksensejs.callback = callback;
         }
+    },
+
+    unset_new_data_callback : function() {
+        ksensejs.callback = null;
+    },
+
+    scale_data : function(init_coord, scale_coord) {
+        var x = init_coord[0];
+        var y = init_coord[1];
+        var z = init_coord[2];
+
+        x += 2.2;
+        if ( x < 0 ) {
+            x = 0;
+        }
+        x = (x/4.4) * scale_coord[0];
+
+        y += 1.6;
+        if ( y < 0 ) {
+            y = 0;
+        }
+        y = (y/3.2) * scale_coord[1];
+
+        if ( z < 0 ) {
+            z = 0;
+        }
+        z = (z/4.0) * scale_coord[2];
+        return [x,y,z];
     }
 };
