@@ -26,7 +26,13 @@ function handle_new_data() {
                 var scaled_coord = scale_coordinate(x,y,width,height);
                 x = scaled_coord[0];
                 y = scaled_coord[1];
-                ctx.fillRect(x,height-y,5+100*velocity[joint].mag,5+100*velocity[joint].mag);
+                ctx.fillRect(x,height-y,5,5);
+
+                ctx.beginPath();
+                ctx.moveTo(x, height-y);
+                ctx.lineTo(x+vel[joint].x*100, height-y+vel[joint].y*100);
+                ctx.closePath();
+                ctx.stroke();
             }
         }
     }
