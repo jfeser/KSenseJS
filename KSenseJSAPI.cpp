@@ -110,6 +110,12 @@ FB::VariantMap KSenseJSAPI::getVelocityData()
 	return velocity_data_output;
 }
 
+__int64 KSenseJSAPI::getDeltaTime()
+{
+	KSenseJSPtr plugin = getPlugin();
+	return plugin->getDeltaTime();
+}
+
 void KSenseJSAPI::new_skeleton_data_event()
 {
 	fire_newskeletondata();

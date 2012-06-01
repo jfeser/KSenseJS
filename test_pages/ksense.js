@@ -116,5 +116,7 @@ var ksensejs = {
         }
         z = (z/4.0) * scale_coord[2];
         return [x,y,z];
+    get_delta_time : function() {
+        return ksensejs.plugin().getDeltaTime();
     }
 };
