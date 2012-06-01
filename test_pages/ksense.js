@@ -78,9 +78,9 @@ var ksensejs = {
         if( typeof ksensejs.velocity_data[id] === "undefined" ) {
             throw "Invalid tracking ID.";
         } else {
-            return [ksensejs.velocity_data[id][name]["x"],
-                    ksensejs.velocity_data[id][name]["y"],
-                    ksensejs.velocity_data[id][name]["z"]];
+            return {x:ksensejs.velocity_data[id][name]["x"],
+                    y:ksensejs.velocity_data[id][name]["y"],
+                    z:ksensejs.velocity_data[id][name]["z"]};
         }
     },
 
@@ -94,28 +94,30 @@ var ksensejs = {
         ksensejs.callback = null;
     },
 
-    scale_data : function(init_coord, scale_coord) {
-        var x = init_coord[0];
-        var y = init_coord[1];
-        var z = init_coord[2];
+    scale_position : function(init_coord, scale_coord) {
+        var x = init_coord.x;
+        var y = init_coord.y;
+        var z = init_coord.z;
 
         x += 2.2;
         if ( x < 0 ) {
             x = 0;
         }
-        x = (x/4.4) * scale_coord[0];
+        x = (x/4.4) * scale_coord.x;
 
         y += 1.6;
         if ( y < 0 ) {
             y = 0;
         }
-        y = (y/3.2) * scale_coord[1];
+        y = (y/3.2) * scale_coord.y;
 
         if ( z < 0 ) {
             z = 0;
         }
-        z = (z/4.0) * scale_coord[2];
-        return [x,y,z];
+        z = (z/4.0) * scale_coord.z;
+        return {x:x, y:y, z:z};
+    },
+
     get_delta_time : function() {
         return ksensejs.plugin().getDeltaTime();
     }
