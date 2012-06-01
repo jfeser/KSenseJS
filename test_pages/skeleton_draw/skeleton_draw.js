@@ -8,22 +8,22 @@ function handle_new_data() {
             var id = tracking_ids[i];
 
             try {
-                var data = ksensejs.get_skeleton_data(id);
+                var skel = ksensejs.get_skeleton_data(id);
             } catch (err) {
                 continue;
             }
             try {
-                var velocity = ksensejs.get_velocity_data(id);
+                var vel = ksensejs.get_velocity_data(id);
             } catch (err) {
                 continue;
             }
 
             var width = canvas.width;
             var height = canvas.height;
-            for( var joint in data ) {
-                var x = data[joint].x;
-                var y = data[joint].y;
-                var scaled_coord = scale_data(x,y,width,height);
+            for( var joint in skel ) {
+                var x = skel[joint].x;
+                var y = skel[joint].y;
+                var scaled_coord = scale_coordinate(x,y,width,height);
                 x = scaled_coord[0];
                 y = scaled_coord[1];
                 ctx.fillRect(x,height-y,5+100*velocity[joint].mag,5+100*velocity[joint].mag);
@@ -32,7 +32,7 @@ function handle_new_data() {
     }
 }
 
-function scale_data(x, y, canvas_x, canvas_y) {
+function scale_coordinate(x, y, canvas_x, canvas_y) {
     x += 2.2;
     if ( x < 0 ) {
         x = 0;
