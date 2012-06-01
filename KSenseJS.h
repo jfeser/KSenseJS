@@ -65,7 +65,7 @@ public:
 private:
 	SkeletonDataPtr		current_skeleton_data;
 	SkeletonDataPtr		previous_skeleton_data;
-	__int64				delta_time;
+	__int64			delta_time;
 
 	FB::JSAPIPtr		jsapi;
 	KinectInterfacePtr	kinect_interface;

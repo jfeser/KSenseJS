@@ -33,6 +33,7 @@ public:
     {
 		registerMethod("getSkeletonData", make_method(this, &KSenseJSAPI::getSkeletonData));
 		registerMethod("getVelocityData", make_method(this, &KSenseJSAPI::getVelocityData));
+		registerMethod("getDeltaTime", make_method(this, &KSenseJSAPI::getDeltaTime));
 		// There is never a good reason to call this from javascript.  It should only
 		// be called by the plugin object.
 		registerMethod("newSkeletonDataEvent", make_method(this, &KSenseJSAPI::new_skeleton_data_event));
@@ -57,6 +58,7 @@ public:
 	// API functions
 	FB::VariantMap getSkeletonData();
 	FB::VariantMap getVelocityData();
+	__int64 getDeltaTime();
 	void new_skeleton_data_event();
 
 private:
