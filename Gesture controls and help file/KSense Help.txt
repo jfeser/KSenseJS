@@ -1,0 +1,280 @@
+ksense.js is a library that allows a person to access the functions of a Microsoft Kinect
+using Javascript. Below is a description of the options
+While all the properties of the ksensejs object are listed, the primary 
+
+
+All of these are properties of the ksensejs object
+Called by ksensejs.function
+
+initialize() - Initializes the plugin and sets and adds event handler ksensejs.handle_new_data
+	Output: None
+
+handle_new_data() - Updates ksense.skeleton_data and ksense.velocity_data with position and velocity data, respectively.
+	Output: None
+
+is_tracking() - Checks to see if Kinect is tracking skeletons
+	Output: True if tracking at least one skeleton
+		False if not tracking any skeletons
+
+get_tracking_ids() - Returns the tracking ids for all players the Kinect has skeletal data for
+	Output: Array of strings, where each string is a tracking id (technically the array is an object, but is called like an array)
+
+get_skeleton_data(id) - Returns all the skeletal position data for an id.
+	Input:id - a tracking id
+	Output: Object with all the skeletal position data. Each property contains a vector3 in the form [x,y,z]
+		Object Properties
+			ankle_left
+			ankle_right
+			elbow_left
+			elbow_right
+			foot_left
+			foot_right
+			hand_left
+			hand_right
+			head
+			hip_center
+			hip_left
+			hip_right
+			knee_left
+			knee_right
+			shoulder_center
+			shoulder_left
+			shoulder_right
+			spine
+			wrist_left
+			wrist_right
+
+get_velocity_data(id) - Returns all the skeletal velocity data for an id
+	Input: id - a tracking id
+	Output: Object with all the skeletal velocity data. Each property contains a vector4 in the form [magnitude,x,y,z]
+		Object Properties
+			ankle_left
+			ankle_right
+			elbow_left
+			elbow_right
+			foot_left
+			foot_right
+			hand_left
+			hand_right
+			head
+			hip_center
+			hip_left
+			hip_right
+			knee_left
+			knee_right
+			shoulder_center
+			shoulder_left
+			shoulder_right
+			spine
+			wrist_left
+			wrist_right
+			
+get_joint_location(id, name) - Returns the position of a joint as a vector3
+	Input: 	id - a tracking id
+			name - the name of the joint. Valid names are below
+				ankle_left
+				ankle_right
+				elbow_left
+				elbow_right
+				foot_left
+				foot_right
+				hand_left
+				hand_right
+				head
+				hip_center
+				hip_left
+				hip_right
+				knee_left
+				knee_right
+				shoulder_center
+				shoulder_left
+				shoulder_right
+				spine
+				wrist_left
+				wrist_right
+	Output: array in the form [x,y,z]
+	
+get_relative_joint_location(id,positionJoint,relativeJoint) - Returns the position of a joint relative to another.
+	Inputs: id - a tracking id
+			positionJoint - The joint to get the position of
+			relativeJoint - the joint that will be considered the origin
+				Possible names for positionJoint and relativeJoint
+					ankle_left
+					ankle_right
+					elbow_left
+					elbow_right
+					foot_left
+					foot_right
+					hand_left
+					hand_right
+					head
+					hip_center
+					hip_left
+					hip_right
+					knee_left
+					knee_right
+					shoulder_center
+					shoulder_left
+					shoulder_right
+					spine
+					wrist_left
+					wrist_right
+	Outputs: array of position in the form [x,y,z]
+	
+get_joint_velocity(id, name) - Returns the magnitude of the velocity of a joint (for individual velocities, see get_joint_velocity_vector)
+	Input: 	id - a tracking id
+			name - the name of the joint. Valid names are below
+				ankle_left
+				ankle_right
+				elbow_left
+				elbow_right
+				foot_left
+				foot_right
+				hand_left
+				hand_right
+				head
+				hip_center
+				hip_left
+				hip_right
+				knee_left
+				knee_right
+				shoulder_center
+				shoulder_left
+				shoulder_right
+				spine
+				wrist_left
+				wrist_right
+	Output: value
+	
+get_joint_velocity_vector(id, name) - Returns the velocity of a joint for the x,y, and z axes (for the magnitude, see get_joint_velocity)
+	Input: 	id - a tracking id
+			name - the name of the joint. Valid names are below
+				ankle_left
+				ankle_right
+				elbow_left
+				elbow_right
+				foot_left
+				foot_right
+				hand_left
+				hand_right
+				head
+				hip_center
+				hip_left
+				hip_right
+				knee_left
+				knee_right
+				shoulder_center
+				shoulder_left
+				shoulder_right
+				spine
+				wrist_left
+				wrist_right
+	Output: Array in format [x,y,z]
+	
+
+	
+set_new_data_callback(callback) - Sets a function to call whenever handle_new_data is called
+	Inputs: callback - a function
+	Outputs: none
+	
+plugin() - calls the plugin that pulls all the information
+	no inputs nor outputs
+	
+ksensejs Properties (Easiest to access through functions above, just for reference)
+skeleton_data - contains the latest period of skeleton position data in an object. Each skeleton is an object inside, followed by properties for each joint.
+	skeleton_data - get individual skeleton data with its id
+		individual skeleton - get joint with joint name
+			returns a vector3 of [x,y,z]
+
+velocity_data - contains the latest period of skeleton velocity data in an object. Each skeleton is an object inside, followed by properties for each joint.
+	skeleton_data - get individual skeleton data with its id
+		individual skeleton - get joint with joint name
+			returns a vector4 of [magnitude,x,y,z]
+			
+callback - contains the name of the function to call each time new data is handled
+			
+	
+	
+Gesture Addon js file (ksense gestures.js)
+This addon adds some basic gestures to the Kinect. Note that these can track any joint, even though some documentation may refer to hands.
+These are accessed through
+ksense.gestures.function
+
+swipe (id,joint[,gestureLength,gestureSpeed]) - Sees if a player swipes his hand up, down, left, or right
+	Inputs: id - a tracking id
+			joint - name of the joint for the motion
+				ankle_left
+				ankle_right
+				elbow_left
+				elbow_right
+				foot_left
+				foot_right
+				hand_left
+				hand_right
+				head
+				hip_center
+				hip_left
+				hip_right
+				knee_left
+				knee_right
+				shoulder_center
+				shoulder_left
+				shoulder_right
+				spine
+				wrist_left
+				wrist_right
+			gestureLength - OPTIONAL This changes how many frames are needed of a certain velocity to read a swipe (default is 2)
+			gestureSpeed - OPTIONAL This changes the minimum speed necessary to read a swipe. (Default is 0.075)
+	Outputs: a string
+		"none" - no swipe was detected
+		"left" - left swipe detected
+		"right" - right swipe detected
+		"up" - up swipe detected
+		"down" - down swipe detected
+
+click (id,joint[,movementDistance,positionTolerance] - Sees if a player push his hand forwards then backwards to about the same position as before
+	Inputs: id - a tracking id
+			joint - name of the joint for the motion
+				ankle_left
+				ankle_right
+				elbow_left
+				elbow_right
+				foot_left
+				foot_right
+				hand_left
+				hand_right
+				head
+				hip_center
+				hip_left
+				hip_right
+				knee_left
+				knee_right
+				shoulder_center
+				shoulder_left
+				shoulder_right
+				spine
+				wrist_left
+				wrist_right
+			movementDistance - OPTIONAL Amount that the hand must come forward for a click to register. (Default is .04)
+			positionTolerance - OPTIONAL How close must the hand be to the starting position of the motion after it clicked forwards. (Default is .1)
+	Outputs: a boolean
+			true - a click was detected
+			false - a click was not detected
+			
+Additional Properties added to ksensejs
+	timeframes - The number of frames to record in the past (default is 30, appx 1 second)
+	skeleton_position_history - A recording of the positions for all the skeletons for the last number of timeframes
+		An array of objects, sorted by timeframe [timeframe1 object, timeframe2 object ... ]
+		Call an individual skeleton by using its id in each timeframe you want
+	skeleton_velocity_history - A recording of all the velocities for all the skeletons for the last number of timeframes
+		An array of objects, sorted by timeframe [timeframe1 object, timeframe2 object ... ]
+		Call an individual skeleton by using its id in each timeframe you want
+
+New functions (not part of ksensejs)
+get_past_data(id,joint,timeframes,array) - returns the past data from one of the arrays for a joint and a specified number of timeframes
+	Inputs: id - a tracking id
+			joint - a joint name
+			timeframes - the number of timeframes to output
+			array - which array to use (unless anything custome is made, either ksensejs.skeleton_position_history or ksensejs.skeleton_velocity_history)
+	Output: an array, organized by timeframe, of the data (either vector3 if position or vector4 if velocity
+		[timeframe1,timeframe2...] timeframe1=[x,y,z] or [magnitude,x,y,z]
