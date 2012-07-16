@@ -98,6 +98,14 @@ var ksensejs = {
         }
     },
 
+    get_relative_joint_location : function(id, name1, name2) {
+        var origin = ksensejs.get_joint_location(id, name2)
+        var point = ksensejs.get_joint_location(id, name1);
+        return [point['x'] - origin['x'],
+                point['y'] - origin['y'],
+                point['z'] - origin['z']];
+    },
+
     get_joint_velocity : function(id, name) {
         if( typeof ksensejs.velocity_data[id] === "undefined" ) {
             throw "Invalid tracking ID.";
@@ -115,6 +123,18 @@ var ksensejs = {
                     z:ksensejs.velocity_data[id][name]["z"]};
         }
     },
+
+    //joint 1 is the vertex, joints 2 and 3 are end points.
+    get_angle : function(id, vertex, end_point1, end_point2) {
+        var v1 = ksensejs.get_relative_joint_location(id, vertex, end_point1);
+        var v2 = ksensejs.get_relative_joint_location(id, vertex, end_point2);
+
+        var dot = v1['x'] * v2['x'] + v1['y'] * v2['y'] + v1['z'] * v2['z'];
+        var mag1 = Math.pow(v1['x'], 2) + Math.pow(v1['y'], 2) + Math.pow(v1['z'], 2);
+        var mag2 = Math.pow(v2['x'], 2) + Math.pow(v2['y'], 2) + Math.pow(v2['z'], 2);
+
+        return Math.acos(dot / Math.sqrt(mag1 * mag2));
+    }
 
     set_new_data_callback : function(callback) {
         if( typeof callback === "function" ) {
