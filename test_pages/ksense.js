@@ -110,4 +110,25 @@ ksensejs.VelocityData;
         }
     }
 };
+/* Export functions. */
+ksensejs['initialize'] = initialize;
+ksensejs['is_tracking'] = is_tracking;
+ksensejs['get_delta_time'] = get_delta_time;
+ksensejs['scale_position'] = scale_position;
+ksensejs['register'] = register;
+ksensejs['unregister'] = unregister;
+ksensejs['get_joint_location'] = get_joint_location;
+ksensejs['get_joint_velocity'] = get_joint_velocity;
+ksensejs['get_joint_velocity_vector'] = get_joint_velocity_vector;
+ksensejs['get_tracking_ids'] = get_tracking_ids;
+ksensejs['get_skeleton_data'] = get_skeleton_data;
+ksensejs['get_velocity_data'] = get_velocity_data;
+
+var gesture = {};
+gesture['swipe'] = swipe;
+gesture['click'] = click;
+gesture['get_past_data'] = get_past_data;
+
+window['ksensejs'] = ksensejs;
+window.ksensejs['gesture'] = gesture;
 
