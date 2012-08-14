@@ -141,15 +141,15 @@ ksensejs.VelocityDataFrame;
          skeleton_data = plugin.getSkeletonData();
          velocity_data = plugin.getVelocityData();
 
-         // Store skeleton and velocity data history.
-         // skeleton_position_history.unshift(skeleton_data);
-         // skeleton_velocity_history.unshift(velocity_data);
-         // if(skeleton_position_history.length > max_timeframes) {
-         //     skeleton_position_history[skeleton_position_history.length] = null;
-         //     skeleton_velocity_history[skeleton_velocity_history.length] = null;
-         //     skeleton_position_history.pop();
-         //     skeleton_velocity_history.pop();
-         // }
+         //Store skeleton and velocity data history.
+         skeleton_position_history.unshift(skeleton_data);
+         skeleton_velocity_history.unshift(velocity_data);
+         if(skeleton_position_history.length > max_timeframes) {
+             skeleton_position_history[skeleton_position_history.length] = null;
+             skeleton_velocity_history[skeleton_velocity_history.length] = null;
+             skeleton_position_history.pop();
+             skeleton_velocity_history.pop();
+         }
 
          for(var i = 0; i < callbacks.length; ++i) {
              callbacks[i]();
@@ -241,6 +241,7 @@ ksensejs.VelocityDataFrame;
       * @param {ksensejs.Vector|ksensejs.MagVector} v1
       * @param {ksensejs.Vector|ksensejs.MagVector} v2
       * @return {ksensejs.Vector|ksensejs.MagVector}
+      * @private
       */
      var get_vector_difference = function(v1, v2) {
          if(v1.hasOwnProperty("mag") && v2.hasOwnProperty("mag")) {
@@ -599,7 +600,6 @@ ksensejs.VelocityDataFrame;
      var gesture = {};
      gesture['swipe'] = swipe;
      gesture['click'] = click;
-     //gesture['get_past_data'] = get_past_data;
 
      window['ksensejs'] = ksensejs;
      window.ksensejs['gesture'] = gesture;

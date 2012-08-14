@@ -45,7 +45,7 @@ $(window).resize(resize);
 $(document).ready(function () {
                       /*Kinect initialization with the plugin*/
                       ksensejs.initialize();
-                      //ksensejs.register(handle_new_data);
+                      ksensejs.register(handle_new_data);
 
                       /* Add the skeleton demo code to check the kinect status. */
                       var canvas = document.getElementById('skeletonCanvas');
@@ -391,8 +391,8 @@ function handle_new_data() {
         $('.selectable').removeClass('hover');
     }
 
-    // kinect_canvas.translationMatrix = mat4.translate(kinect_canvas.translationMatrix, 
-    //                                                  [x * 250, y * 250, z * 500]);
+    kinect_canvas.translationMatrix = mat4.translate(kinect_canvas.translationMatrix, 
+                                                     [x * 250, y * 250, z * 500]);
     // oldrHand = absRHand;
     // oldlHand = absLHand;
     // oldrHandVec = rHandVec;
