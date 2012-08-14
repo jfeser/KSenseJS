@@ -6,6 +6,7 @@
   implementation for the KSense JS project
 
 \**********************************************************/
+
 #ifndef H_KSenseJSPLUGIN
 #define H_KSenseJSPLUGIN
 

@@ -84,7 +84,7 @@ function create_scene() {
 window.onload = function() {
     create_scene();
     ksensejs.initialize();
-    ksensejs.set_new_data_callback(handle_new_data);
+    ksensejs.register(handle_new_data);
 }
 
 function handle_new_data() {

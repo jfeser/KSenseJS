@@ -45,7 +45,7 @@ add_windows_plugin(${PROJECT_NAME} SOURCES)
 #    "http://timestamp.verisign.com/scripts/timestamp.dll")
 
 # add library dependencies here; leave ${PLUGIN_INTERNAL_DEPS} there unless you know what you're doing!
-set(KINECT_SDK_PATH "C:/Program Files/Microsoft SDKs/Kinect/v1.0/")
+set(KINECT_SDK_PATH "C:/Program Files/Microsoft SDKs/Kinect/v1.5/")
 set(WINAPI_PATH "C:/WinDDK/7600.16385.1/inc/")
 
 include_directories("${KINECT_SDK_PATH}/inc")

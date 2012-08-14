@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>Molecule Manipulator</title>
+    <META http-equiv="Content-Script-Type" content="text/javascript">
+    <link rel="stylesheet" href="ChemDoodleWeb.css" type="text/css">
+    <script src="../ksense.js"></script>
+    <script src="ChemDoodleWeb-libs.js"></script>
+    <script src="ChemDoodleWeb.js"></script>
+    <script src="Molecule Manipulator.js"></script>
+  </head>
+  <body>
+    <div id="outer">
+      <div id="maincanvasContainer">
+        <div id="buttons" class="centered">
+          <span id="rot" class="selectable chosen">Rotate</span>
+          <span id="pos" class="selectable">Translate</span>
+          <span id="zoom" class="selectable">Zoom</span>
+          <div id="cursor"></div>
+        </div>
+        <canvas id="chemCanvas" width="100" height="100"></canvas>
+      </div>
+
+      <div id="subcanvasContainer">
+        <canvas id="skeletonCanvas" class="subcanvas" width="300" height="300"></canvas>
+        <canvas id="subMol" class="subcanvas" width="300" height="300"></canvas>
+      </div>
+      
+      <div id="uiContainer">
+        <input type="file" onchange="handleFile(this.files)">
+        <select onchange="setMoleculeRepresentation(this.value)">
+          <option value="Ball and Stick">Ball and Stick</option>
+          <option value="van der Waals Spheres">Van der Waals Spheres</option>
+          <option value="Stick">Stick</option>
+          <option value="Wireframe">Wireframe</option>
+          <option value="Line">Line</option>
+        </select>
+      </div>
+    </div>
+  </body>
+</html>
